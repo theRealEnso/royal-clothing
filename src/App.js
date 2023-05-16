@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import {Routes, Route} from 'react-router-dom';
+import Home from './routes/home/Home.jsx';
+import Navigation from './components/navigation/Navigation.jsx';
+import Shop from './routes/shop/Shop.jsx';
+import Authentication from './routes/authentication/Authentication.jsx'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path='/' element={<Navigation />}>
+
+        {/* index or index={true} tells app that whenever route is matched to /, render the Home component */}
+        <Route index={true} element={<Home />}></Route>
+        <Route path='shop' element={<Shop />}></Route>
+        <Route path='sign-in' element={<Authentication />}></Route>
+      </Route>
+      
+    </Routes>
   );
 }
 
