@@ -22,6 +22,13 @@
       flex-direction: column;
       overflow: scroll;
     }
+
+    .sub-total {
+      font-size: 25px;
+      border-top: 1px solid grey;
+      text-align: center;
+      padding: 15px 0;
+    }
   
     button {
       margin-top: auto;
