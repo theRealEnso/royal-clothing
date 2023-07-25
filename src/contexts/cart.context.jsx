@@ -30,7 +30,10 @@ const deleteCartItem = (cartItems, productToDelete) => {
 
 export const CartContext = createContext({
     cartItems: [],
+    setCartItems: () => {},
     addItemToCart: () => {},
+    removeItemFromCart: () => {},
+    deleteItemFromCart: () => {},
     cartCount: 0,
     setCartCount: () => {},
     isCartOpen: false,
@@ -46,7 +49,7 @@ export const CartProvider = ({children}) => {
     const [total, setTotal] = useState(0);
 
     const addItemToCart = (productToAdd) => {
-        setCartItems(addCartItem(cartItems, productToAdd))
+        setCartItems(addCartItem(cartItems, productToAdd));
     };
 
     const removeItemFromCart = (productToRemove) => {
@@ -58,7 +61,7 @@ export const CartProvider = ({children}) => {
     }
 
     useEffect(() => {
-        const newCartCount = cartItems.reduce((accumulator, cartItem) => accumulator + cartItem.quantity, 0); //accumulator starts at 0 => 0 + nextValue (cartItem)'s quantity. Will traverse through cartItems array and total the quantity of each cart item. Useffect will trigger this function everytime state of cartItems array changes
+        const newCartCount = cartItems.reduce((accumulator, cartItem) => accumulator + cartItem.quantity, 0); //accumulator starts at 0 => 0 + nextValue (cartItem)'s quantity. Will traverse through each cart item in the cartItems array and total the quantity of each cart item. Useffect will trigger this function everytime state of cartItems array changes
 
         setCartCount(newCartCount);
     }, [cartItems]);
@@ -69,6 +72,7 @@ export const CartProvider = ({children}) => {
         setTotal(newTotal);
     }, [cartItems]);
 
-    const value = {cartCount, setCartCount, isCartOpen, setIsCartOpen, cartItems, setCartItems, addItemToCart, removeItemFromCart, deleteItemFromCart, total}
+    const value = {cartCount, setCartCount, isCartOpen, setIsCartOpen, cartItems, setCartItems, addItemToCart, removeItemFromCart, deleteItemFromCart, total};
+    
     return (<CartContext.Provider value={value}>{children}</CartContext.Provider>)
 };

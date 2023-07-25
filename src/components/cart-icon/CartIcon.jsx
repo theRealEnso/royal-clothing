@@ -14,7 +14,7 @@ const CartIcon = () => {
     // useEffect block is to close the cart dropdown when user clicks anywhere outside of the cart dropdown and outside of the cart icon
     useEffect(() => {
         const closeCartDropdown = (event) => {
-            console.log(event);
+            // console.log(event);
             if(event.target.className !== 'item-count'  && event.target.className !== 'cart-icon-container'  && event.target.className !== 'cart-items' && event.target.nodeName !== 'svg' && event.target.nodeName !== 'path'){
                 setIsCartOpen(false);
             };
