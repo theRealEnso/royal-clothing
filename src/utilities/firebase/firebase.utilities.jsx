@@ -39,8 +39,8 @@ export const createUserDocumentOrSignInUserFromAuth = async (userAuth, additiona
     const userDocRef = doc(userCollectionRef, userAuth.uid); //create user document reference inside of users collection => use doc method, pass in the users collection as 1st argument and use the unique ID of the user response object as 2nd argument (response.user.uid) to create a document reference of this user. This document reference will have shape of an object. Name of the document will be the response.user.uid
 
     const userSnapShot = await getDoc(userDocRef);
-    console.log(userSnapShot);
-    console.log(userSnapShot.exists()); //returns boolean, nested under prototype
+    // console.log(userSnapShot);
+    // console.log(userSnapShot.exists()); //returns boolean, nested under prototype
 
     //If user data does not exist yet, then use setDoc function to set the user data inside the document instance, and then place document of user data inside the database. Otherwise, document already exists and simply return to me that user document
     if(!userSnapShot.exists()){
@@ -90,18 +90,13 @@ export const getCategoriesAndDocuments = async () => {
     try {
         const querySnapshot = await getDocs(q); // The getDocs method from the firestore is used to asynchronously retrieve the documents matching the query, which is stored in the querySnapshot constant.
 
-        console.log(querySnapshot); // prints a giant object
-        console.log(querySnapshot.docs); //.docs nested one layer deeper contains an array of our 5 product document instances for each product category
-        const categoryMap = querySnapshot.docs.reduce((accumulator, docSnapshot) => {
-            //docSnapshot aka nextValue represents a a single product document in the querySnapshhot.docs array
-            console.log(docSnapshot);
-            console.log(docSnapshot.data()); // returns object with key-value pairs-- 1st pair has key of title and a string value of the product category name. The second pair has key of items  and its value is an array of individual products
-            const {title, items} = docSnapshot.data();
-            accumulator[title.toLowerCase()] = items;
-            return accumulator;
-        }, {});
-    
-        return categoryMap;
+        // console.log(querySnapshot); // prints a giant object
+        // console.log(querySnapshot.docs); //.docs nested one layer deeper contains a general array of our 5 product document instances/objects for each product category, but not the actual data yet. Need to nest further into .data() under prototype
+        
+        //map through general array of product objects and get actual data for each
+        const categoriesArray = querySnapshot.docs.map((document => document.data()))
+        console.log(categoriesArray);
+        return categoriesArray; // final result outputs array of 5 giant product objects
         
     } catch (error) {
         console.log(error);
@@ -146,7 +141,35 @@ export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth,
 
 ////////////////       OLD CODE     /////////////////////////
 
+// OLD FUNCTION GETTING DATA AND RETURNING MAP OBJECT BEFORE SWITCHING TO REDUX
+
+// export const getCategoriesAndDocuments = async () => {
+//     const collectionRef = collection(db, 'categories'); // get reference to categories collection inside firestore db
+//     const q = query(collectionRef); //query method on collectionRef creates a query that retrieves all of the documents inside the categories collection (i.e. hats/jackets/sneakers/mens/womens)
+
+//     try {
+//         const querySnapshot = await getDocs(q); // The getDocs method from the firestore is used to asynchronously retrieve the documents matching the query, which is stored in the querySnapshot constant.
+
+//         // console.log(querySnapshot); // prints a giant object
+//         // console.log(querySnapshot.docs); //.docs nested one layer deeper contains an array of our 5 product document instances for each product category
+//         const categoryMap = querySnapshot.docs.reduce((accumulator, docSnapshot) => {
+//             //docSnapshot aka nextValue represents a a single product document in the querySnapshhot.docs array
+//             // console.log(docSnapshot);
+//             // console.log(docSnapshot.data()); // returns object with key-value pairs-- 1st pair has key of title and a string value of the product category name. The second pair has key of items  and its value is an array of individual products
+//             const {title, items} = docSnapshot.data();
+//             accumulator[title.toLowerCase()] = items;
+//             return accumulator;
+//         }, {});
+    
+//         return categoryMap;
+        
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
+
 // this is an async function will add new user to DB if user does not exists, otherwise will return user data of existing user. Function accepts user data from the user response object when signing in with google popup
+
 // export const createUserDocumentOrSignInUserFromAuth = async (userAuth, additionalInformation = {}) => { // userAuth is placeholder. Will be passing in user data from response object when signing in with google popup i.e. response.user. additionalInformation placeholder object will handle responses where displayName comes back as null and we set the displayName on the actual form
 //     if(!userAuth) return;
     
@@ -176,3 +199,4 @@ export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth,
 //         return userDocRef;
 //     };
 // };
+
