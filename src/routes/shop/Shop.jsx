@@ -17,6 +17,11 @@ const Shop = () => {
         const getCategoriesArray = async () => {
             const categoriesArray = await getCategoriesAndDocuments()
             dispatch(setCategoriesArray(categoriesArray));
+
+            // dispatch({
+            //     type: CATEGORY_ACTION_TYPES.SET_CATEGORIES_ARRAY,
+            //     payload: categoriesArray
+            // })
         }
 
         getCategoriesArray();

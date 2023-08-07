@@ -11,7 +11,7 @@ export const categoriesReducer = (state = CATEGORIES_INITIAL_STATE, action = {})
         case CATEGORY_ACTION_TYPES.SET_CATEGORIES_ARRAY:
             return {
                 ...state,
-                categoriesArray: payload
+                categoriesArray: payload // categoriesArray: categoriesArray
             }
         default:
             return state;
