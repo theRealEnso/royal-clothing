@@ -8,7 +8,7 @@ import {createSelector} from 'reselect';
 
 //how reselect works => creates a 'memoized' selector => memoization is the process of caching / storing the previous value of something. When a derived data selector is created using createSelector, it automatically memoizes the output. Memoization means that if the input selectors' values haven't changed since the last invocation, the selector will return the previously cached result instead of recomputing it. This caching mechanism improves performance by avoiding unnecessary recomputations, which in turn, avoids react components from needlessly re-rendering
 
-const extractCategoryReducer = (state) => state.categories; //input selector to be used
+const extractCategoryReducer = (state) => state.categories; //input selector to be used, get the categories reducer
 
 export const selectCategories = createSelector([extractCategoryReducer], (categoriesSlice) => categoriesSlice.categoriesArray); // makes a memoized selector => createSelector is a function that has two arguments; First, it takes an array of input selectors (can have multiple selectors) and second is the result function. The result function RECEIVES the RESULTS of the input selectors as arguments, then performs some operation or computation on those arguments
 

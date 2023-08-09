@@ -1,6 +1,6 @@
 import { CATEGORY_ACTION_TYPES } from "./category-types";
 
-const CATEGORIES_INITIAL_STATE = {
+export const CATEGORIES_INITIAL_STATE = {
     categoriesArray: [],
 };
 

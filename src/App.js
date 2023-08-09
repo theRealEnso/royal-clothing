@@ -27,7 +27,7 @@ function App() {
         //   type: USER_ACTION_TYPES.SET_CURRENT_USER,
         //   payload: user
         // })
-    })
+    });
 
     return unsubscribe;
   }, [dispatch])

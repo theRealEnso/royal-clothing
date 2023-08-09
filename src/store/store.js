@@ -1,6 +1,11 @@
 import {compose, legacy_createStore, applyMiddleware} from 'redux';
 
+import {persistStore, persistReducer} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
 import {rootReducer} from './root-reducer';
+
+//////////////////////////////////////////////////////////////////////////////
 
 // - The loggerMiddleware function is defined as a curried function. A curried function is a function that takes multiple arguments, but instead of taking them all at once, it takes one argument at a time and returns a new function that takes the next argument. In this case, loggerMiddleware takes one argument store.
 
@@ -32,8 +37,23 @@ const loggerMiddleware = (store) => (next) => (action) => {
 
 // The main purpose of this logger middleware is to log information about the actions and the state changes in the Redux store. It can be helpful for debugging and understanding how the actions flow through the Redux middleware chain and how the state evolves with each action dispatch.
 
+///////////////////////////////////////////////////////////////////////////////
+
+const persistConfig = {
+    key: 'root', // root = persist the whole thing, starting from the root level
+    storage, // browsers use local storage by default. Shorthand for storage: storage
+    blacklist: ['user'] // what we don't want to persist goes in the blacklist. Blacklisting user b/c user is being handled by onAuthStateChangedListener. This might conflict with local storage. Is an array of strings of reducer keys
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 const middleWares = [loggerMiddleware]; // array of middlewares (can have multiple). Middlewares catch actions that have been dispatched before they hit the reducer, then performs some operation
 
 const composedEnhancers = compose(applyMiddleware(...middleWares));
 
-export const store = legacy_createStore(rootReducer, undefined, composedEnhancers)
+export const store = legacy_createStore(persistedReducer, undefined, composedEnhancers);
+
+export const persistor = persistStore(store);
+
+// export const store = legacy_createStore(rootReducer, undefined, composedEnhancers)
+

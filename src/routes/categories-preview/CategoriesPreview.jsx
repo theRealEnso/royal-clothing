@@ -6,7 +6,6 @@ import { selectCategoriesMap } from "../../store/categories/category-selector";
 import CategoryPreview from "../../components/category-preview/CategoryPreview";
 
 const CategoriesPreview = () => {
-    // const {categoriesMap} = useContext(CategoriesContext);
     const categoriesMap = useSelector(selectCategoriesMap);
 
     return (
@@ -19,7 +18,7 @@ const CategoriesPreview = () => {
                 })
             }
         </Fragment>
-    )
+    );
 };
 
 export default CategoriesPreview;
