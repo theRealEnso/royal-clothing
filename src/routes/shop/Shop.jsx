@@ -2,8 +2,9 @@ import {Routes, Route} from 'react-router-dom';
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 
-import {getCategoriesAndDocuments} from '../../utilities/firebase/firebase.utilities';
-import { setCategoriesArray } from '../../store/categories/category-actions';
+// import {getCategoriesAndDocuments} from '../../utilities/firebase/firebase.utilities';
+// import { setCategoriesArray } from '../../store/categories/category-actions';
+import {fetchCategoriesAsync} from '../../store/categories/category-actions'
 
 import CategoriesPreview from '../categories-preview/CategoriesPreview';
 import Category from '../../components/category/Category';
@@ -14,19 +15,25 @@ const Shop = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const getCategoriesArray = async () => {
-            const retrievedCategoriesArray = await getCategoriesAndDocuments();
-            dispatch(setCategoriesArray(retrievedCategoriesArray));
+        dispatch(fetchCategoriesAsync());
 
             // dispatch({
             //     type: CATEGORY_ACTION_TYPES.SET_CATEGORIES_ARRAY,
             //     payload: categoriesArray
             // })
-        };
-
-        getCategoriesArray();
-
+        ;
     }, [dispatch])
+
+    //old code before async redux thunk
+    
+    // useEffect(() => {
+    //     const getCategoriesArray = async () => {
+    //         const categoriesArray = getCategoriesAndDocuments();
+    //         dispatch(setCategoriesArray(categoriesArray));
+    //     }
+
+    //     getCategoriesArray();
+    // }, [dispatch])
 
     return (
         <Routes>

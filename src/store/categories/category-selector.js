@@ -26,6 +26,8 @@ export const selectCategoriesMap = createSelector([selectCategories], (categorie
 
 //what this ultimately does is, if the categories from the redux store state hasn't actually changed, data hasn't been added or deleted, then do NOT recompute
 
+export const selectCategoriesIsLoading = createSelector([extractCategoryReducer], (categoriesSlice) => categoriesSlice.isLoading);
+
 /////       OLD CODE BEFORE MEMOIZING   ////////////////////
 
 // export const selectCategoriesMap = (state) => state.categories.categoriesArray.reduce((accumulator, category) => {
