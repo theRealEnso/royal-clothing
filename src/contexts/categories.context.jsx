@@ -14,7 +14,7 @@ export const CategoriesProvider = ({children}) => {
     const value = {categoriesMap, setCategoriesMap};
 
     //get data one time when app mounts
-    //note: recall that getCategoriesAndDocuments is an async function that returns a promise. We cannot call async functions directly inside a useEffect. Instead, we must create a new async function and nest it inside new async function, and then call it afterwards
+    //note: recall that getCategoriesAndDocuments is an async function that returns a promise. We cannot call async functions that already return a promise directly inside a useEffect. Instead, we must create a new async function and nest it inside new async function, and then call it afterwards
     useEffect(() => {
         const getCategoriesMap = async () => {
             const categoryMap = await getCategoriesAndDocuments();

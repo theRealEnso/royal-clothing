@@ -28,7 +28,7 @@ const Shop = () => {
     
     // useEffect(() => {
     //     const getCategoriesArray = async () => {
-    //         const categoriesArray = getCategoriesAndDocuments();
+    //         const categoriesArray = await getCategoriesAndDocuments();
     //         dispatch(setCategoriesArray(categoriesArray));
     //     }
 

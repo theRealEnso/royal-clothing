@@ -28,7 +28,7 @@ $main-color: black;
       outline: none;
     }
 
-    // if focused, then find next sibling or general sibling that has class of form-input-label and apply the shrink effect
+    // if focused, then find next sibling or general sibling that has class of form-input-label and apply the shrink effect. This means that the input inside the FormInput component needs to be placed before the label, that way the label is recognized as the "next" sibling that has classname of form-input-label
     &:focus ~ .form-input-label {
       @include shrinkLabel();
     }

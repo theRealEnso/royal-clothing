@@ -11,7 +11,8 @@ const CategoriesPreview = () => {
     const isLoading = useSelector(selectCategoriesIsLoading)
 
     return (
-        //map through array of titles, run callback on each title => For each title, extract array of product objects first, then return / render the category preview component passing in this product data as props so that the category preview component has access to the data
+        //Object.keys on categoriesMap returns an array of product titles
+        //map through each title => For each title, extract array of product objects first, then return / render the category preview component passing in this product data as props so that the category preview component has access to the data
         <Fragment>
             {  
                 isLoading ? <Spinner></Spinner> : (Object.keys(categoriesMap).map((title) => {

@@ -1,6 +1,6 @@
 //when working with redux, need to move code that handles business logic into selectors. This way, we can define multiple selectors that do different things. This allows us to (if needed) in the future implement new selector functions that perhaps use the data differently, or perhaps extract different parts of data and do something else with it
 
-// Since we are working with redux, we modified the getCategoriesAndDocuments function to just get the basic data and return an array of 5 giant product objects. Originally, this function also returned a map object all in one go, but we are moving that logic into a selector here
+//  => Since we are working with redux, we modified the getCategoriesAndDocuments function to just get the basic data and return an array of 5 giant product objects. Originally, this function also returned a map object all in one go, but we are moving that logic into a selector here
 
 // => Reminder that nested in each product object is another object with title keys w/ string values of product category names + items key w/ value of array of product objects tied to that category))
 
@@ -38,6 +38,6 @@ export const selectCategoriesIsLoading = createSelector([extractCategoryReducer]
 
 //Currently, every time this selector runs, the logic that reduces over the categories array re-runs, and returns a new net map object every time, despite the categories array never changing. Since a new net object gets returned every time, this will cause React to unnecessarily re-render components. 
 
-// Meaning that, as it currently stands, whenever the user navigates to, away from, and back to Shop, and the Categories Preview component is rendered again, useSelector returns a new categoriesMap object every single time even though the actual data does not change, forcing React to re-render the "new" object. 
+// Meaning that, as it currently stands, whenever the user navigates to, away from, and back to Shop, and the Categories Preview component is rendered again, useSelector returns a NEW categoriesMap object every single time even though the actual data does not change (and the categoriesMap still looks the same), forcing React to re-render the "new" object. 
 
 // Likewise, it is the same with the Category component--when user navigates to, away from, and then back to View More and the Category component is rendered on the screen again, useSelector returns a brand new categoriesMap object. It is unable to cache or store value and use the same cached value to avoid unnecessary re-renders. This is where the re-select library + the concept of memoization comes in
