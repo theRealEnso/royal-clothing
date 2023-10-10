@@ -36,14 +36,14 @@ export const createUserDocumentOrSignInUserFromAuth = async (userAuth, additiona
     
     const userCollectionRef = collection(db, 'users'); //use collection method to create a reference to a users collection. Need to pass in firestore instance (const db = getFireStore())
 
-    const userDocRef = doc(userCollectionRef, userAuth.uid); //create user document reference inside of users collection => use doc method, pass in the users collection as 1st argument and use the unique ID of the user response object as 2nd argument (response.user.uid) to create a document reference of this user. This document reference will have shape of an object. Name of the document will be the response.user.uid
+    const userDocRef = doc(userCollectionRef, userAuth.uid); //create user document reference inside of users collection. This is a pointer that points to where data could live inside of firebase => use doc method, pass in the users collection as 1st argument and use the unique ID of the user response object as 2nd argument (response.user.uid) to create a document reference of this user. This document reference will have shape of an object. Name of the document will be the response.user.uid
 
-    const userSnapShot = await getDoc(userDocRef);
-    // console.log(userSnapShot);
-    // console.log(userSnapShot.exists()); //returns boolean, nested under prototype
+    const userSnapshot = await getDoc(userDocRef); // get actual data inside the document reference
+    // console.log(userSnapshot);
+    // console.log(userSnapshot.exists()); //returns boolean, nested under prototype
 
     //If user data does not exist yet, then use setDoc function to set the user data inside the document instance, and then place document of user data inside the database. Otherwise, document already exists and simply return to me that user document
-    if(!userSnapShot.exists()){
+    if(!userSnapshot.exists()){
         const {displayName, email} = userAuth; // destructure displayName and email directly from response.user object
         const dateCreated = new Date();
         try {
@@ -57,7 +57,9 @@ export const createUserDocumentOrSignInUserFromAuth = async (userAuth, additiona
             console.log(`error with creating new user: ${error}`)
         };
     } else {
-        return userDocRef;
+        // return userDocRef;
+        return userSnapshot; // modify to return the snapshot instead bc this is where the data actually lives. The userDocRef is just a pointer that points to the space where the data lives...
+        //get data now from the snapshot so that we can then store it in the reducer
     };
 };
 

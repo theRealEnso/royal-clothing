@@ -10,7 +10,7 @@ import Spinner from '../spinner/spinner';
 import './category-styles.scss';
 
 const Category = () => {
-    const {category} = useParams();
+    const {category} = useParams(); // extract category variable we defined in nested routing structure inside shop component. This var ends up being product titles
     // const {categoriesMap} = useContext(CategoriesContext);
     const categoriesMap = useSelector(selectCategoriesMap);
     const isLoading = useSelector(selectCategoriesIsLoading);

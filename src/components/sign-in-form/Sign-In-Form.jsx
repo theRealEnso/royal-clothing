@@ -1,12 +1,17 @@
 import {useState} from 'react';
+import {useDispatch} from 'react-redux'
 
-import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from "../../utilities/firebase/firebase.utilities";
+// import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from "../../utilities/firebase/firebase.utilities"; // remove, extracting async logic away from components and moving into saga
+import { googleSignInStart, emailSignInStart } from '../../store/user/user-action';
+
 import FormInput from '../form-input/FormInput';
 import Button from '../button/Button';
 
 import './sign-in-form-styles.scss';
 
 const SignInForm = () => {
+    const dispatch = useDispatch();
+
     const [formInputs, setFormInputs] = useState({
         email: '',
         password: ''
@@ -25,11 +30,14 @@ const SignInForm = () => {
     };
 
     const signInWithGoogle = async () => {
-        try {
-            await signInWithGooglePopup();
-        } catch (error) {
-            console.log(error);
-        };
+        dispatch(googleSignInStart());
+        // try {
+        //     await signInWithGooglePopup();
+        // } catch (error) {
+        //     console.log(error);
+        // };
+        ////////////////////////////////////////////////////////////////////////
+
         // const response = await signInWithGooglePopup(); //note that we can destructure user from the response directly here (const {user}) but keeping as is for clarity
         // console.log(response, `I am the response object!`);
         // console.log(response.user, `I am the nested user response object!`);
@@ -38,9 +46,12 @@ const SignInForm = () => {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
+
         try {
-            const response = await signInAuthUserWithEmailAndPassword(email, password);
-            console.log(response.user);
+            dispatch(emailSignInStart(email, password));
+            // const response = await signInAuthUserWithEmailAndPassword(email, password);
+            // console.log(response.user);
+            //////////////////////////////////////////////////////////////////
             //state changes, currentUser updates, and therefore any component that uses this will re-render
             // const response = await signInAuthUserWithEmailAndPassword(email, password);
             // console.log(response);

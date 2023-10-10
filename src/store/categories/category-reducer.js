@@ -10,7 +10,7 @@ export const CATEGORIES_INITIAL_STATE = {
 // modify actions to include 3 action types (starting to fetch categories + successfully fetching categories + if fetching categories failed)
 //when fetching categories starts or begins, then isLoading is true
 // if fetching categories is successful, then isLoading is now false because it's done. Set categoriesArray to the payload as we had before
-// if fetching categories failed, then isLoading is also false, and set error to the payload
+// if fetching categories failed, then isLoading is also false to stop loading, and set error to the payload
 export const categoriesReducer = (state = CATEGORIES_INITIAL_STATE, action = {}) => {
     const {type, payload} = action;
 

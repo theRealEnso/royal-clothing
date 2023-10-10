@@ -2,8 +2,10 @@ import {Routes, Route} from 'react-router-dom';
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 
-import { createUserDocumentOrSignInUserFromAuth, onAuthStateChangedListener, getCurrentUser } from './utilities/firebase/firebase.utilities.jsx';
-import { setCurrentUser } from './store/user/user-action.js';
+// import { createUserDocumentOrSignInUserFromAuth, onAuthStateChangedListener, getCurrentUser } from './utilities/firebase/firebase.utilities.jsx';
+// import { setCurrentUser } from './store/user/user-action.js';
+
+import { checkUserSession } from './store/user/user-action.js';
 
 import Home from './routes/home/Home.jsx';
 import Navigation from './components/navigation/Navigation.jsx';
@@ -15,7 +17,11 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getCurrentUser().then((user) => console.log(user));
+    dispatch(checkUserSession());
+    
+    // getCurrentUser().then((user) => console.log(user));
+  }, []);
+
   // useEffect(() => {
   //   const unsubscribe = onAuthStateChangedListener((user) => {
   //     if(user){
@@ -31,8 +37,9 @@ function App() {
   //       // })
   //   });
 
-    // return unsubscribe;
-  }, []);
+  //   return unsubscribe;
+  // }, []);
+
 
   return (
     <Routes>
