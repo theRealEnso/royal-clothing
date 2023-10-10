@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux';
 
 // import {getCategoriesAndDocuments} from '../../utilities/firebase/firebase.utilities';
 // import { setCategoriesArray } from '../../store/categories/category-actions';
-import {fetchCategoriesAsync} from '../../store/categories/category-actions'
+import {fetchCategoriesStart} from '../../store/categories/category-actions'
 
 import CategoriesPreview from '../categories-preview/CategoriesPreview';
 import Category from '../../components/category/Category';
@@ -15,16 +15,21 @@ const Shop = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchCategoriesAsync());
-
-            // dispatch({
-            //     type: CATEGORY_ACTION_TYPES.SET_CATEGORIES_ARRAY,
-            //     payload: categoriesArray
-            // })
-        ;
+        dispatch(fetchCategoriesStart()); // fetchCategoriesStart instead bc the saga is set up to listen for this action
     }, [dispatch])
+    
+    //thunk code before moving into saga
+    // useEffect(() => {
+    //     dispatch(fetchCategoriesAsync());
 
-    //old code before async redux thunk
+    //         // dispatch({
+    //         //     type: CATEGORY_ACTION_TYPES.SET_CATEGORIES_ARRAY,
+    //         //     payload: categoriesArray
+    //         // })
+    //     ;
+    // }, [dispatch])
+
+    //old code before moving logic into async redux thunk middleware
     
     // useEffect(() => {
     //     const getCategoriesArray = async () => {

@@ -6,7 +6,7 @@
 
 // - The second level of the curried function is (next) => {...}. This function takes an argument called next. In Redux middleware, next is a reference to the next middleware in the chain or the actual dispatch function if there are no more middlewares. It is used to pass the action along the middleware chain. If you don't call next(action) in this middleware, the action won't be propagated to the next middleware or the reducer.
 
-// - The third level of the curried function is (action) => {...}. This function takes the action as an argument. The action represents the object dispatched to update the state in Redux. It typically has a type property that describes the action type and a payload property that contains the data associated with the action.
+// - The third level of the curried function is (action) => {...}. This function takes the action as an argument. The action represents the action object dispatched to update the state in Redux. It typically has a type property that describes the action type and a payload property that contains the data associated with the action.
 
 export const loggerMiddleware = (store) => (next) => (action) => {
     if(!action.type) return next(action);
@@ -15,9 +15,9 @@ export const loggerMiddleware = (store) => (next) => (action) => {
     console.log('payload: ', action.payload);
     console.log('current state: ', store.getState());
 
-    next(action);
+    next(action); // pass action along, updates reducer, which updates state
 
-    console.log('next state: ', store.getState());
+    console.log('next state: ', store.getState()); // finally, log update state
 };
 
 // 1.) The middleware first checks whether the action object has a type property. If there is no type, it means this action is not a standard Redux action, so the middleware simply calls next(action) to pass the action along to the next middleware or the reducer. This is to allow non-standard actions (e.g., plain objects that don't follow the typical Redux action structure) to still flow through the middleware chain.

@@ -1,7 +1,7 @@
 import { CATEGORY_ACTION_TYPES } from "./category-types";
 import { createAction } from "../../utilities/reducer-utilities";
 
-import { getCategoriesAndDocuments } from "../../utilities/firebase/firebase.utilities";
+// import { getCategoriesAndDocuments } from "../../utilities/firebase/firebase.utilities";
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //moving to asynchronous redux-thunk. Use thunk wherever there are asynchronous actions happening, such as getting data from firestore.
@@ -18,14 +18,17 @@ export const fetchCategoriesSuccess = (categoriesArray) => createAction(CATEGORY
 
 export const fetchCategoriesFailed = (error) => createAction(CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_FAILED, error);
 
-// creating thunk function. Is a function that returns a function that gets a dispatch. Can be an async function
-export const fetchCategoriesAsync = () => async (dispatch) => {
-    dispatch(fetchCategoriesStart());
-    try {
-        const categoriesArray = await getCategoriesAndDocuments();
-        dispatch(fetchCategoriesSuccess(categoriesArray));
-    } catch (error) {
-        dispatch(fetchCategoriesFailed(error));
-    };
+
+
+// thunk async function before moving to saga
+// creating thunk function. Is a function that returns a function that gets a dispatch. Can be an async function. Moving logic that fetches data away from the shop component and moving this piece into a middleware thunk
+// export const fetchCategoriesAsync = () => async (dispatch) => {
+//     dispatch(fetchCategoriesStart());
+//     try {
+//         const categoriesArray = await getCategoriesAndDocuments();
+//         dispatch(fetchCategoriesSuccess(categoriesArray));
+//     } catch (error) {
+//         dispatch(fetchCategoriesFailed(error));
+//     };
     
-};
+// };

@@ -119,11 +119,26 @@ export const signOutAuthUser = async () => {
 
 export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
 
+export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = onAuthStateChanged(
+            auth, 
+            (userAuth) => {
+                unsubscribe();
+                resolve(userAuth);
+            }, reject);
+    });
+
+    // we know we get the unsubscribe from onAuthStateChanged listener from firebase.
+    //onAuthStateChanged takes the auth object (auth = gethAuth()) and also takes a callback function. We know onAuthStateChanged automatically returns on authentication object by default once it initializes. The callback function then receives this user auth object as an input, and then runs whatever set of instructions with this object
+   //This listener will automatically know if there is a user already signed in, or whether there isn't one. Regardless, we get some value back.
+    //Don't want this listener to always stay active, want to turn it off once we get a value back, otherwise we get a memory leak. That's why we immediataly run unsubscribe() in the callback; and then resolve the promise with with the same user authentication object that was received as an input
+    // reject is a callback function that runs when an error is thrown in the process of fetching for the user auth.
+};
+
 // What is a callback? A callback is just a block of code that performs some desired function
-// Here, we are defining onAuthStateChangedListener, which is really just a wrapper function that wraps onAuthStateChanged and executes this firebase method.
-// OnAuthStateChangedListener will execute some sort of callback function that receives a user object. Based on this user object, perform some operation. Since we are actually returning the onAuthStateChanged function, onAuthStateChanged will then receive these same set of instructions to be executed.
-// onAuthStateChanged firebase method needs two things to work-- the auth instance (getAuth()) and some sort of callback function or set of instructions to run when the auth instance changes. Will automatically monitor changes to auth instance. This is a higher order function-- it gets passed in auth i.e. getAuth() as an argument
-// Since onAuthStateChanged is an open listener, it will automatically listen for anytime the state of the auth singleton changes (i.e. user signs in or out) and run the callback function
+// onAuthStateChanged firebase method needs two things to work-- the auth instance (getAuth()) and some sort of callback function or set of instructions to run when the auth instance changes. This is an open listener and will automatically monitor changes to auth instance (when user signs in and out) and return a user authentication object
+// Here, we are defining onAuthStateChangedListener, which is really just a wrapper function that wraps onAuthStateChanged and executes this firebase method. It receives a callback as an input, and uses this input when it eventually calls onAuthStateChanged
 // Specific instructions for the callback function is defined in the user context
 
 //Observer pattern => this is just some kind of asynchronous stream of events

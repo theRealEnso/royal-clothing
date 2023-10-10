@@ -2,7 +2,7 @@ import {Routes, Route} from 'react-router-dom';
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 
-import { createUserDocumentOrSignInUserFromAuth, onAuthStateChangedListener } from './utilities/firebase/firebase.utilities.jsx';
+import { createUserDocumentOrSignInUserFromAuth, onAuthStateChangedListener, getCurrentUser } from './utilities/firebase/firebase.utilities.jsx';
 import { setCurrentUser } from './store/user/user-action.js';
 
 import Home from './routes/home/Home.jsx';
@@ -15,22 +15,24 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => {
-      if(user){
-        createUserDocumentOrSignInUserFromAuth(user);
-      }
+    getCurrentUser().then((user) => console.log(user));
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChangedListener((user) => {
+  //     if(user){
+  //       createUserDocumentOrSignInUserFromAuth(user);
+  //     }
 
-      // leave dispatch outside of the if block, otherwise user won't be able to sign out. Dispatch currentUser of null when signing out would fail the conditional truthy check
-      dispatch(setCurrentUser(user)); 
+  //     // leave dispatch outside of the if block, otherwise user won't be able to sign out. Dispatch currentUser of null when signing out would fail the conditional truthy check
+  //     dispatch(setCurrentUser(user)); 
 
-        // dispatch({
-        //   type: USER_ACTION_TYPES.SET_CURRENT_USER,
-        //   payload: user
-        // })
-    });
+  //       // dispatch({
+  //       //   type: USER_ACTION_TYPES.SET_CURRENT_USER,
+  //       //   payload: user
+  //       // })
+  //   });
 
-    return unsubscribe;
-  }, [dispatch])
+    // return unsubscribe;
+  }, []);
 
   return (
     <Routes>
