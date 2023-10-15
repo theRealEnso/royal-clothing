@@ -132,7 +132,7 @@ export const getCurrentUser = () => {
     });
 
     // we know we get the unsubscribe from onAuthStateChanged listener from firebase.
-    //onAuthStateChanged takes the auth object (auth = gethAuth()) and also takes a callback function. We know onAuthStateChanged automatically returns on authentication object by default once it initializes. The callback function then receives this user auth object as an input, and then runs whatever set of instructions with this object
+    //onAuthStateChanged takes the auth object (auth = gethAuth()) and also takes a callback function. We know onAuthStateChanged automatically returns on authentication object by default once it initializes. The callback function then receives this user auth object as an input, and then runs whatever set of instructions with this object in the callback function
    //This listener will automatically know if there is a user already signed in, or whether there isn't one. Regardless, we get some value back.
     //Don't want this listener to always stay active, want to turn it off once we get a value back, otherwise we get a memory leak. That's why we immediataly run unsubscribe() in the callback; and then resolve the promise with with the same user authentication object that was received as an input
     // reject is a callback function that runs when an error is thrown in the process of fetching for the user auth.

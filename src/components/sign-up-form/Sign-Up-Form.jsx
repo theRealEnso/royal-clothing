@@ -1,11 +1,16 @@
 import {useState} from 'react';
 import { createAuthUserWithEmailAndPassword, createUserDocumentOrSignInUserFromAuth } from '../../utilities/firebase/firebase.utilities';
 
+import {useDispatch} from 'react-redux';
+import { signUpStart } from '../../store/user/user-action';
+
 import FormInput from '../form-input/FormInput';
 import Button from '../button/Button'
 import './sign-up-form.styles.scss';
 
 const SignUpForm = () => {
+    const dispatch = useDispatch();
+
     const [formInputs, setFormInputs] = useState({
         displayName: '',
         email: '',
@@ -27,6 +32,7 @@ const SignUpForm = () => {
     };
 
     const handleFormSubmit =  async (event) => {
+
         event.preventDefault();
         if(password !== confirmPassword){
             alert(`Error! Passwords do not match!`);
@@ -34,10 +40,11 @@ const SignUpForm = () => {
         };
 
         try {
-            //  const response = await createAuthUserWithEmailAndPassword(email, password);
-            //  console.log(response);
-            const {user} = await createAuthUserWithEmailAndPassword(email, password); //destructure user directly from response i.e. response.user
-            await createUserDocumentOrSignInUserFromAuth(user, {displayName});
+            dispatch(signUpStart(email, password, displayName));
+            // //  const response = await createAuthUserWithEmailAndPassword(email, password);
+            // //  console.log(response);
+            // const {user} = await createAuthUserWithEmailAndPassword(email, password); //destructure user directly from response i.e. response.user
+            // await createUserDocumentOrSignInUserFromAuth(user, {displayName});
             setFormInputs({
                 displayName: '',
                 email: '',

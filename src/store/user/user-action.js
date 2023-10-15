@@ -33,3 +33,25 @@ export const signInSuccess = (userAuth) => createAction(USER_ACTION_TYPES.SIGN_I
 
 export const signInFailed = (error) => createAction(USER_ACTION_TYPES.SIGN_IN_FAILED, error);
 
+export const signUpStart = (email, password, displayName) => createAction(USER_ACTION_TYPES.SIGN_UP_START, {email, password, displayName});
+
+export const signUpSuccess = (user, additionalDetails) => createAction(USER_ACTION_TYPES.SIGN_UP_SUCCESS, {user, additionalDetails});
+
+export const signUpFailed = (error) => createAction(USER_ACTION_TYPES.SIGN_IN_FAILED, error);
+
+// try {
+//     //  const response = await createAuthUserWithEmailAndPassword(email, password);
+//     //  console.log(response);
+//     const {user} = await createAuthUserWithEmailAndPassword(email, password); //destructure user directly from response i.e. response.user
+//     await createUserDocumentOrSignInUserFromAuth(user, {displayName});
+//     setFormInputs({
+//         displayName: '',
+//         email: '',
+//         password:'',
+//         confirmPassword: ''
+//     });
+
+// } catch (error) {
+//     error.code === 'auth/email-already-in-use' ? alert(`Cannot create user, email already in use!`) : console.log(`Error with creating user`, error);
+// };
+
