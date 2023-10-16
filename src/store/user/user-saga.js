@@ -2,9 +2,9 @@ import {takeLatest, all, call, put} from 'redux-saga/effects';
 
 import {USER_ACTION_TYPES} from './user-types';
 
-import {signInSuccess, signInFailed, signUpSuccess, signUpFailed} from './user-action';
+import {signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutSuccess, signOutFailed} from './user-action';
 
-import { getCurrentUser, createUserDocumentOrSignInUserFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword } from '../../utilities/firebase/firebase.utilities';
+import { getCurrentUser, createUserDocumentOrSignInUserFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, signOutAuthUser } from '../../utilities/firebase/firebase.utilities';
 
 export function* getSnapshotFromUserAuth(userAuth, additionalDetails) {
     try {
@@ -12,6 +12,16 @@ export function* getSnapshotFromUserAuth(userAuth, additionalDetails) {
         console.log(userSnapshot);
         console.log(userSnapshot.data());
         yield put(signInSuccess({id: userSnapshot.id, ...userSnapshot.data()}));
+    } catch (error) {
+        yield put(signInFailed(error));
+    };
+};
+
+export function* isUserAuthenticated() {
+    try {
+        const userAuth = yield call(getCurrentUser);
+        if(!userAuth) return;
+        yield call(getSnapshotFromUserAuth, userAuth);
     } catch (error) {
         yield put(signInFailed(error));
     };
@@ -48,13 +58,12 @@ export function* signInAfterSignUp({payload: {user, additionalDetails}}) {
     yield call(getSnapshotFromUserAuth, user, additionalDetails);
 };
 
-export function* isUserAuthenticated() {
+export function* signOutUser() {
     try {
-        const userAuth = yield call(getCurrentUser);
-        if(!userAuth) return;
-        yield call(getSnapshotFromUserAuth, userAuth);
-    } catch (error) {
-        yield put(signInFailed(error));
+        yield call(signOutAuthUser);
+        yield put(signOutSuccess());
+    } catch(error) {
+        yield put(signOutFailed(error));
     };
 };
 
@@ -78,6 +87,10 @@ export function* onSignUpSuccess() {
     yield takeLatest(USER_ACTION_TYPES.SIGN_UP_SUCCESS, signInAfterSignUp);
 };
 
+export function* onSignOutStart() {
+    yield takeLatest(USER_ACTION_TYPES.SIGN_OUT_START, signOutUser);
+};
+
 export function* userSaga() {
-    yield all([call(onCheckUserSession), call(onGoogleSignInStart), call(onEmailSignInStart), call(onSignUpStart), call(onSignUpSuccess)]);
+    yield all([call(onCheckUserSession), call(onGoogleSignInStart), call(onEmailSignInStart), call(onSignUpStart), call(onSignUpSuccess), call(onSignOutStart)]);
 };
