@@ -7,6 +7,9 @@ import {PersistGate} from 'redux-persist/integration/react';
 
 import { store, persistor } from './store/store';
 
+import {Elements} from '@stripe/react-stripe-js';
+import { stripePromise } from './utilities/stripe/stripe-utilities';
+
 import './index.scss';
 import App from './App';
 
@@ -19,7 +22,9 @@ root.render(
     <PersistGate persistor={persistor} loading={null}> 
     {/* can pass in a component into the loading prop if we want to display a loading screen or something else while user refreshes, or pass null if we don't want to display anything */}
       <BrowserRouter>
-        <App />
+        <Elements stripe={stripePromise}>
+          <App />
+        </Elements>
       </BrowserRouter>
     </PersistGate>
   </Provider>

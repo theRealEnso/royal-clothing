@@ -9,8 +9,8 @@ import { getCurrentUser, createUserDocumentOrSignInUserFromAuth, signInWithGoogl
 export function* getSnapshotFromUserAuth(userAuth, additionalDetails) {
     try {
         const userSnapshot = yield call(createUserDocumentOrSignInUserFromAuth, userAuth, additionalDetails); // syntax a bit different => separate inputs using commas instead of wrapping them inside parens
-        console.log(userSnapshot);
-        console.log(userSnapshot.data());
+        // console.log(userSnapshot);
+        // console.log(userSnapshot.data());
         yield put(signInSuccess({id: userSnapshot.id, ...userSnapshot.data()}));
     } catch (error) {
         yield put(signInFailed(error));

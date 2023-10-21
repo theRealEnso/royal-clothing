@@ -7,7 +7,9 @@ import {CATEGORY_ACTION_TYPES} from './category-types'
 
 export function* fetchCategoriesAsync(){
     try {
-        const categoriesArray = yield call(getCategoriesAndDocuments); // yield is like await in async await. Is sort of like an ability to pause functions. Since So, since getCategoriesAndDocuments is asynchronous, we wait until it resolves before continuing. Need to also use call from redux-saga to fire off effect
+        const categoriesArray = yield call(getCategoriesAndDocuments); // yield is like await in async await. Is sort of like an ability to pause functions. Since getCategoriesAndDocuments is asynchronous, we wait until it resolves before continuing. Need to also use call from redux-saga to fire off effect
+
+        // no need to add parens when using call on another function, breaks code => i.e. don't do yield call(getCategoriesAndDocuments());
         yield put(fetchCategoriesSuccess(categoriesArray)); // put essentially replaces dispatch
     } catch (error) {
         yield put(fetchCategoriesFailed(error));
