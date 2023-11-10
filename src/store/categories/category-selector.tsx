@@ -6,9 +6,12 @@
 
 import {createSelector} from 'reselect';
 
+import { CategoriesState } from './category-reducer';
+import { CategoryMap } from './category-types';
+
 //how reselect works => creates a 'memoized' selector => memoization is the process of caching / storing the previous value of something. When a derived data selector is created using createSelector, it automatically memoizes the output. Memoization means that if the input selectors' values haven't changed since the last invocation, the selector will return the previously cached result instead of recomputing it. This caching mechanism improves performance by avoiding unnecessary recomputations, which in turn, avoids react components from needlessly re-rendering
 
-const extractCategoryReducer = (state) => state.categories; //input selector to be used, get the categories reducer
+const extractCategoryReducer = (state): CategoriesState => state.categories; //input selector to be used, get the categories reducer
 
 export const selectCategories = createSelector([extractCategoryReducer], (categoriesSlice) => categoriesSlice.categoriesArray); // makes a memoized selector => createSelector is a function that has two arguments; First, it takes an array of input selectors (can have multiple selectors) and second is the result function. The result function RECEIVES the RESULTS of the input selectors as arguments, then performs some operation or computation on those arguments
 
@@ -17,11 +20,11 @@ export const selectCategories = createSelector([extractCategoryReducer], (catego
 // => selectCategories is now a memoized selector
 
 //creating another memoized selector. This one receives the previously memoized selectCategories selector as an input (state.categories.categoriesArray). The result function for this selector receives the result of selectCategories as an argument (which again is the categoriesArray) and then proceeds to perform the reduce logic on this array to transform it into a map object
-export const selectCategoriesMap = createSelector([selectCategories], (categoriesArray) => categoriesArray.reduce((accumulator, category) => {
+export const selectCategoriesMap = createSelector([selectCategories], (categoriesArray): CategoryMap => categoriesArray.reduce((accumulator, category) => {
     const {title, items} = category;
     accumulator[title.toLowerCase()] = items;
     return accumulator;
-    }, {})
+    }, {} as CategoryMap)
 );
 
 //ends up memoizing the categoriesMap from the reduce logic and saves this computed value. What this ultimately does is, if the categories from the redux store state hasn't actually changed (i.e data hasn't been added or deleted) then do NOT recompute

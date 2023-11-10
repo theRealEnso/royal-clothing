@@ -3,7 +3,8 @@ import ButtonSpinner from '../button-spinner/button-spinner';
 
 export const BUTTON_TYPE_CLASSES = {
     google: 'google-sign-in',
-    inverted: 'inverted'
+    inverted: 'inverted',
+    confirmed: 'confirmed'
 };
 
 const Button = ({children, buttonType, isLoading, ...otherProps}) => {

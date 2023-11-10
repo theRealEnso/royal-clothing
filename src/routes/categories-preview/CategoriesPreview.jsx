@@ -8,7 +8,7 @@ import Spinner from '../../components/spinner/spinner';
 
 const CategoriesPreview = () => {
     const categoriesMap = useSelector(selectCategoriesMap);
-    const isLoading = useSelector(selectCategoriesIsLoading)
+    const isLoading = useSelector(selectCategoriesIsLoading);
 
     return (
         //Object.keys on categoriesMap returns an array of product titles extracted from map object

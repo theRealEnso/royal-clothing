@@ -1,18 +1,25 @@
 import {useState} from 'react';
 
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import { selectCartTotal } from '../../store/cart/cart-selector';
 import { selectCurrentUser } from '../../store/user/user-selector';
+import { emptyCartItems } from '../../store/cart/cart-actions';
+
+import { useNavigate } from 'react-router-dom';
 
 import './payment-form.styles.scss';
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 import Button, {BUTTON_TYPE_CLASSES} from "../button/Button";
-import ButtonSpinner from '../button-spinner/button-spinner';
+// import ButtonSpinner from '../button-spinner/button-spinner';
 
 const PaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
+
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
 
     const amount = useSelector(selectCartTotal);
     const currentUser = useSelector(selectCurrentUser);
@@ -58,6 +65,8 @@ const PaymentForm = () => {
         } else {
             if(paymentResult.paymentIntent.status === 'succeeded') {
                 alert('Payment Successful!');
+                navigate('/confirmation');
+                dispatch(emptyCartItems());
             };
         };
     };
@@ -67,7 +76,11 @@ const PaymentForm = () => {
             <form className='form-container' onSubmit={handlePayment}>
                 <h2>Credit Card Payment: </h2>
                 <CardElement></CardElement>
-                <Button buttonType={BUTTON_TYPE_CLASSES.inverted} isLoading={isProcessingPayment}>Pay Now</Button>
+
+                <div className='b-container'>
+                    <Button buttonType={BUTTON_TYPE_CLASSES.inverted} isLoading={isProcessingPayment}>Pay Now</Button>
+                </div>
+                
             </form>
         </div>
     );
