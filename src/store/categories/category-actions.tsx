@@ -9,7 +9,10 @@ export type FetchCategoriesSuccess = ActionWithPayload<CATEGORY_ACTION_TYPES.FET
 export type FetchCategoriesFailed = ActionWithPayload<CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_FAILED, Error>;
 
 //Ok, so withMatcher reaches into the action creator function being passed to it (i.e `(): FetchCategoriesStart => createAction(CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_START`), gets the action type object of FetchCategoriesStart, and then gets the actual type from the enum (CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_START), and finally sets that type to the top level
+
 //`fetchCategoriesStart = (): FetchCategoriesStart =>` ASSIGNING FetchCategoriesStart TYPE object to the fetchCategoriesStart function. When fetchCategoriesStart is dispatched, we tell TS that we are returning the action object type of FetchCategoriesStart, which is specifically an action object type with ONLY a type property w/o a payload
+
+//Ultimately, fetchCategoriesStart has been modified to perform double-duty.  It is now a function checks if a passed action creator function has the same type as the corresponding action that they create
 export const fetchCategoriesStart = withMatcher((): FetchCategoriesStart => createAction(CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_START));
 
 //`fetchCategoriesSuccess = (): FetchCategoriesSuccess =>` ASSIGNING FetchCategoriesSuccess TYPE to the fetchCategoriesSuccess function. When fetchCategoriesSuccess is dispatched, we are returning the action object type of FetchCategoriesSuccess, which is specifically an action object type with both an action and a payload

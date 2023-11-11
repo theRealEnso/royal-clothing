@@ -1,11 +1,31 @@
-import { AnyAction } from "redux"; //AnyAction is a generic `type` in Redux that represents an action object. It represents any possible action that can be dispatched in a Redux store. Its purpose is to provide flexibiity in working with actions, which allows us to work with different action types without specifying their exact shape. There are action objects that only have a type, actions that have a type and a payload, and even action objects that have properties other than a type and a payload. However, this flexibility comes with a lack of type safety with Redux because it doesn't enforce a specific action structure., hence the need to define specific typescript types with well-defined structures
+import { AnyAction } from "redux";
+//under the hood, AnyAction is an interface. Interfaces and Types in TS are just ways to describe and code out an object
 
-//reminder that `types` in typescript are a way of coding out objects
+//AnyAction extends from Action. Action is another interface that has the shape of an object, that receives some Generic T. Inside that object, it has a type property that has assigned to it the corresponding Generic T value, so it looks like this:
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// export interface Action<T = any> {
+//     type: T
+// }
+
+//Since AnyAction "extends" from Action, this means that AnyAction assumes the shape and properties of the Action interface object, but it EXTENDS to it additional properties. AnyAction looks like the following:
+
+// export interface AnyAction extends Action {
+//     [extraprops: string]: any
+// }
+
+//So, effectively, AnyAction from redux looks like both of them combined. It has a type property, and any extra properties that can be added to it, that can be of any data type
+// {
+//     type: T,
+//     [extraprops: string]: any
+// }
+
+//To summarize, AnyAction is a generic `type` in Redux that represents an action object. It represents any possible action that can be dispatched in a Redux store. Its purpose is to provide flexibiity in working with actions, which allows us to work with different action types without specifying their exact shape. There are action objects that only have a type, actions that have a type and a payload, and even action objects that have properties other than a type and a payload. However, this flexibility comes with a lack of type safety with Redux because it doesn't enforce a specific action structure., hence the need to define specific typescript types with well-defined structures
 
 
-//Right, so what the heck are we trying to achieve with TS? We need typeguards against all of the different actions that can fire off and hit our reducers. Our old reducer(s) are set up to only handle specific actions. For example, the category reducer responds to action with type(s) CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_START / FETCH_CATEGORIES_SUCESS / FETCH_CATEGORIES_FAILED. But, we know in our app, any other actions can fire off and hit the reducers, such as redux persist / re-hydrate, actions can fire off from any additional middlewares we have, etc. There are no type guards against these. So, what we want to do is get more specific with typescript and narrow down the actions that our reducers respond to. We only want, for example, the category reducer to ONLY respond to those 3 specific actions, and nothing else. We aim to do this by modifying our action creator functions and EXTENDING TO THEM the ability to check the action it receives against the action they create--In other words, our action creator functions generate actions per usual, but now,  they will also type check against the actions that they hold. 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//Right, so what the heck are we trying to achieve with TS? We need typeguards against all of the different actions that can fire off and hit our reducers. As we know, every reducer gets every action that gets dispatched. Our old reducer(s) are set up to only handle specific actions. For example, the category reducer responds to action with type(s) CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_START / FETCH_CATEGORIES_SUCESS / FETCH_CATEGORIES_FAILED. But, we know in our app, any other actions can fire off and hit the reducers, such as redux persist / re-hydrate, actions can fire off from any additional middlewares we have, etc. There are no type guards against these. So, what we want to do is get more specific with typescript and narrow down the actions that our reducers respond to. We only want, for example, the category reducer to ONLY respond to those 3 specific actions, and nothing else. We aim to do this by modifying our action creator functions and EXTENDING TO THEM the ability to check the action it receives against the action they create--In other words, our action creator functions generate actions per usual, but now,  they will also type check against the actions that they hold. 
 
 //We achieve this by defining some type named Matchable, and applying concepts of Generics, Type Predicates, Intersection Types, and Return Types
 
@@ -28,11 +48,11 @@ import { AnyAction } from "redux"; //AnyAction is a generic `type` in Redux that
 //this Matchable type will be the EXTENSION we are adding onto our actual action creator functions (such as fetchCategoriesStart, fetchCategoriesSuccess, fetchCategoriesFailed)
 
 type Matchable<AC extends () => AnyAction> = AC & {
-    type: ReturnType<AC>['type']; //ReturnType comes from TS. Here, we the value we get back is the action object of the AC, and then we use ['type'] to pull off the type property/value from the object
-    match(action: AnyAction): action is ReturnType<AC>
+    type: ReturnType<AC>['type']; //ReturnType comes from TS. Here, the value we get back from using the ReturnType literal on AC is the actual action object of the action creator function itself. Next, we use ['type'] to pull off the "type" property/value from the object, and finally assign this extracted value to the type property of the new Type
+    match(action: AnyAction): action is ReturnType<AC> // type predicate is used here. We are telling this match method that whatever action object it receives IS and WILL BE the action object of the action creator itself. We are NARROWING the scope of any actions that can be passed to the reducers down to the specific action to the action creators
 };
 
-// function overloading withMatcher function. We are defining all of the various action creators we might receive
+// function overloading withMatcher function. We are defining all of the various action creator functions we might receive. Need typeguards for all scenarios -- action creator functions that have arguments, action creator functions that don't have arguments, etc.
 //This first overloaded function handles instances where action creators don't receive any arguments/inputs. For example, fetchCategoriesStart does not receive any arguments
 //withMatcher function takes a Generic AC parameter
 //The extends keyword is used to specify a constraint on AC. It requires AC to be a type that extends from a specific shape or type. In this case, it enforces two constraints:
@@ -41,19 +61,19 @@ type Matchable<AC extends () => AnyAction> = AC & {
 //      This constraint ensures that AC is a function that returns an action object with a type property of that is of a string data type. It provides a type check for the shape of the action creator function.
 
 //Next, this overloaded function takes a single argument `actionCreator`. This argument is a placeholder, will be passing in our actual action creator functions in category-actions file (fetchCategoriesStart, fetchCategoriesSuccess, fetchCategoriesFailed). We assign the Generic AC to the actionCreator parameter, because we want our action creator functions to have this type
-//Finally, what we get back is a Matchable type object of the AC type
+//Finally, what we get back is a Matchable type object that is intersected with general shape of AC + has been type narrowed via intersecting another type that has the same return type and matches the same action
 export function withMatcher<AC extends () => AnyAction & {type: string}>(actionCreator: AC): Matchable<AC>;
 
 //This next overloaded function is for instances where action creators DO receive arguments/inputs (i.e fetchCategoriesSuccess receives categoriesArray, fetchCategoriesFailed receives an error)
 // Same as above, except the `(...args: any[])`  means that AC must be a of a function type that accepts any number of arguments--we are accumulating any n number of arguments and concatenating them into an array, then using the any keyword plus the [] to tell TS that the data types of the arguments could be anything in the array
 //The return type of the function AC must be an action object where the `type` property inside of the object is of a string data type
-//Again, what we get back is a Matchable type object of the AC type
+//Again, what we get back is a Matchable type object that is intersected with general shape of AC + has been type narrowed via intersecting another type that has the same return type and matches the same action
 export function withMatcher<AC extends (...args: any[]) => AnyAction & {type: string}>(actionCreator: AC): Matchable<AC>;
 
 //this function is the actual implementation. It takes a more general argument `actionCreator` of `type` Function (again, we are passing in our action creator functions in category-actions file)
 //It calls whatever function that is being passed into the actionCreator placeholder, which gets an action object, which then gets the "type" property off of that action object, and then casts it to a variable named "type"
 //Next, It returns a new object that combines the actionCreator function with two additional properties: `type` and `match, where `type` is the type property extracted from the action created by the actionCreator and `match(action: AnyAction)`, which is a function that checks if the provided action has the same type as the actionCreator.
-//Ultimately, withMatcher is a function that takes an Action Creator function and adds an additional functionality to them. This additional functionality is meant to determine if a passed action creator function has the same type as the corresponding action that they create
+//Ultimately, withMatcher is a function that takes an Action Creator function and adds an additional functionality to them. This additional functionality is meant to determine if a passed action creator function has the same type as the corresponding action that they create. It always returns Matchable type object defined above that narrows the type 
 export function withMatcher(actionCreator: Function){
     const type = actionCreator().type;
     //use Object.assign to take the action creator, and modify it so that it has the extracted type as well as the match method
@@ -62,8 +82,11 @@ export function withMatcher(actionCreator: Function){
         match(action: AnyAction) {
             return action.type === type;
         }
+        // match method / function receives whatever action flows through reducers (which has shape of AnyAction), but checks if the type properties / values are the same as the action creator itself
     });
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Define two different explicit action object types-- one action type that specifically has a payload, and another that does not have a payload
 // some actions don't have a payload. With typescript, we need to be specific. Actions that don't necessarily have a payload need to be typed differently
@@ -79,18 +102,18 @@ export type Action<T> = {
     type: T;
 };
 
-// The following lines of code involve FUNCTIONAL OVERLOADING (comes from typescript, not JS). This allows us to create multiple function type definitions of the same name, but allows each one to receive different parameter types. They should all always have the same number of parameters (in this case, createAction there's always a type and a payload), but now it can return different types depending on different parameter types we receive. Cannot use arrow function syntax, must use classic function declarations.
+// The following lines of code involve FUNCTIONAL OVERLOADING (comes from typescript, not JS). This allows us to create multiple function type definitions for the same function, but allows the same function to the receive and handle different parameter types. They should all always have the same number of parameters (in this case, createAction always a type and a payload), but now it can return different Types depending on different parameter types we receive. Cannot use arrow function syntax, must use classic function declarations.
 
 // So, depending on whether or not createAction receives a payload, we want to return the appropriate action--either an ActionWithPayload type if there is a payload, or just an Action type if there is no payload
 
 // For this overloaded function, here we are saying: If createAction gets called with a type and a payload, then the return action object type from this function will be ActionWithPayload<T,P> with T being one of the enum values in category-types file being passed in as T, and P being passed in as whatever payload. We know T (enum values) is a string, so we extend T as a string
 //`T extends string`: This part of the function specifies that the `type` argument must be of a string data type.
 //`P` is a generic type parameter that represents the payload data.
-// It takes two arguments: type and payload, then it the colon `: ActionWithPayload<T, P>` says that it returns an ActionWithPayload object type, which includes the provided type and payload.
+// It takes two arguments: type and payload, then it the colon `: ActionWithPayload<T, P>` says that it returns an ActionWithPayload object Type, which includes the provided type and payload.
 export function createAction<T extends string, P>(type: T, payload: P): ActionWithPayload<T, P>;
 
 
-//For this overloaded function, here we are saying: If createAction gets called with just only a type, then the return type from this function will be Action<T> with T being one of the enum values in category-types file being passed in as T. We know that T (enum values) is a string, so we again extend it as a string
+//For this overloaded function, here we are saying: If createAction gets called with just only a type, then the return Type from this function will be Action<T> with T being one of the enum values in category-types file being passed in as T. We know that T (enum values) is a string, so we again extend it as a string
 // Even though there is no P value, we can't leave the payload parameter, so we pass void to it. Remember that void means we are not expecting anything, so in this case, we are not expecting a payload value
 // `T extends string` : This part specifies that the type argument must be a string.
 //`payload: void` - This specifies that the payload should be void, meaning there is no associated data.
@@ -101,9 +124,8 @@ export function createAction<T extends string>(type: T, payload: void): Action<T
 
 
 //This is the actual implementation of what we want createAction to do. Is the TS equivalent of the old helper function in the old code. Helper function still takes a type and a payload as inputs, and returns a new object setting type to type, and payload to payload. Except this time, it can be overloaded with the above two, and can spit out different action type objects depending on which parameters are passed in
-//We say T extends string in the Generic because we know that our types are always strings.
-// Top two can be thought of as different slices of this same main function that performs differently depending on whether or not the action has a payload
-export function createAction<T extends string, P>(type: T, payload: P){
+//Again, say T extends string in the Generic because we know this T value we pass into the type properties of the action objects will always be of a string data type
+export function createAction<T extends string, P>(type: T, payload: P) {
     return {type, payload};
 };
 
@@ -117,7 +139,7 @@ export function createAction<T extends string, P>(type: T, payload: P){
 
 
 
-//old code before implementing typescript ////////////////////////////////////////////////////////////////////////////////////////////////
+//old code before implementing typescript //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // export const createAction = (type, payload) => ({type, payload});
 

@@ -6,7 +6,7 @@ export enum CATEGORY_ACTION_TYPES {
     FETCH_CATEGORIES_FAILED = 'FETCH_CATEGORIES_FAILED',
 };
 
-//thinking back to shape the data in categories collection we have stored in firebase => categories is an array of 5 giant objects. In each object, there is a title key with a corresponding string of the product category name. There is also an items array containing product objects--each object has a id, which is a number/ imageUrl, which is a string/ name, which is a string / price, which is a number. We need to explicitly type these out and specify their specific data types
+//thinking back to shape the data in categories collection we have stored in firebase => categories is an array of 5 giant objects. In each object, there is a title key with a corresponding string of the product category name. There is also an items array containing product objects--each object has a id, which is a number + imageUrl, which is a string/ + name, which is a string + price, which is a number. We need to explicitly type these out and specify their specific data types
 export type CategoryItem = {
     id: number,
     imageUrl: string,

@@ -4,14 +4,14 @@
 
 // => Reminder that nested in each product object is another object with title keys w/ string values of product category names + items key w/ value of array of product objects tied to that category))
 
+//how reselect works => creates a 'memoized' selector => memoization is the process of caching / storing the previous value of something. When a derived data selector is created using createSelector, it automatically memoizes the output. Memoization means that if the input selectors' values haven't changed since the last invocation, the selector will return the previously cached result instead of recomputing it. This caching mechanism improves performance by avoiding unnecessary recomputations, which in turn, avoids react components from needlessly re-rendering
+
 import {createSelector} from 'reselect';
 
 import { CategoriesState } from './category-reducer';
 import { CategoryMap } from './category-types';
 
-//how reselect works => creates a 'memoized' selector => memoization is the process of caching / storing the previous value of something. When a derived data selector is created using createSelector, it automatically memoizes the output. Memoization means that if the input selectors' values haven't changed since the last invocation, the selector will return the previously cached result instead of recomputing it. This caching mechanism improves performance by avoiding unnecessary recomputations, which in turn, avoids react components from needlessly re-rendering
-
-const extractCategoryReducer = (state): CategoriesState => state.categories; //input selector to be used, get the categories reducer
+const extractCategoryReducer = (state): CategoriesState => state.categories; //input selector to be used, get the categories reducer ({categories: categoriesReducer})
 
 export const selectCategories = createSelector([extractCategoryReducer], (categoriesSlice) => categoriesSlice.categoriesArray); // makes a memoized selector => createSelector is a function that has two arguments; First, it takes an array of input selectors (can have multiple selectors) and second is the result function. The result function RECEIVES the RESULTS of the input selectors as arguments, then performs some operation or computation on those arguments
 
