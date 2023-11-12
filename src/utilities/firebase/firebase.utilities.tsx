@@ -1,8 +1,10 @@
 import {initializeApp } from 'firebase/app'; // function to create app instance based off of object config
 
-import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged} from 'firebase/auth'; //functions for signing in
+import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User, NextOrObserver} from 'firebase/auth'; //functions for signing in
 
-import {getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs} from 'firebase/firestore'; // functions for adding users to db => doc gets document instance, getDoc function only gets data inside a document instance. Likewise, setDoc function only sets the data inside a document.
+import {getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs, QueryDocumentSnapshot} from 'firebase/firestore'; // functions for adding users to db => doc gets document instance, getDoc function only gets data inside a document instance. Likewise, setDoc function only sets the data inside a document.
+
+import { Category } from '../../store/categories/category-types';
 
 // Your web app's Firebase configuration, copied over from firebase
 const firebaseConfig = {
@@ -23,6 +25,20 @@ googleProvider.setCustomParameters({
     prompt: 'select_account'
 });
 
+export type ProductObjectsToAdd = {
+    title: string;
+};
+
+export type AdditionalInformation = {
+    displayName?: string;
+};
+
+export type UserData = {
+    createdAt: Date;
+    displayName: string;
+    email: string;
+};
+
 //signing in with google providers
 export const auth = getAuth(); // singleton. Keeps track of authentication state of entire app
 
@@ -30,7 +46,7 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider)
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
 // this is an async function will add new user to DB if user does not exists, otherwise will return user data of existing user. Function accepts user data from the user response object when signing in with google popup
-export const createUserDocumentOrSignInUserFromAuth = async (userAuth, additionalInformation = {}) => { // userAuth is placeholder. Will be passing in user data from response object when signing in with google popup i.e. response.user. additionalInformation placeholder object will handle responses where displayName comes back as null and we set the displayName on the actual form
+export const createUserDocumentOrSignInUserFromAuth = async (userAuth: User, additionalInformation = {} as AdditionalInformation): Promise<void | QueryDocumentSnapshot<UserData>> => { // userAuth is placeholder. Will be passing in user data from response object when signing in with google popup i.e. response.user. additionalInformation placeholder object will handle responses where displayName comes back as null and we set the displayName on the actual form
     if(!userAuth) return;
     
     const userCollectionRef = collection(db, 'users'); //use collection method to create a reference to a users collection. Need to pass in firestore instance (const db = getFireStore())
@@ -57,14 +73,15 @@ export const createUserDocumentOrSignInUserFromAuth = async (userAuth, additiona
         };
     } else {
         // return userDocRef;
-        return userSnapshot; // modify to return the snapshot instead bc this is where the data actually lives. The userDocRef is just a pointer that points to the space where the data lives...
+        return userSnapshot as QueryDocumentSnapshot<UserData>; // modify to return the snapshot instead bc this is where the data actually lives. The userDocRef is just a pointer that points to the space where the data lives...
         //get data now from the snapshot so that we can then store it in the reducer
     };
 };
 
 
 //async function that is very similar to createUserDocumentOrSignInUserFromAuth. We are only using this function ONCE to add all of our product data to firestore inside the product / category context.
-export const addCollectionAndDocuments = async (collectionKey, productObjectsToAdd) => { // collectionKey and objectsToAdd are arguments/placeholder values. We will be passing in string 'categories' as the collection key when we use this in our context, and we will be passing in the entire shop data array of product objects from the shop-data.js file into the objectsToAdd
+//collectionKey and objectsToAdd are arguments/placeholder values. We will be passing in string 'categories' as the collection key and we will be passing in the entire shop data array of product objects from the shop-data.js file into the productObjectsToAdd
+export const addCollectionAndDocuments = async <T extends ProductObjectsToAdd> (collectionKey: string, productObjectsToAdd: T[]): Promise<void> => { 
 
     const collectionRef = collection(db, collectionKey); // use firestore's collection method to create a reference to a collection. Need to pass in db aka getFirestore() method, and a collection key.
     
@@ -84,7 +101,7 @@ export const addCollectionAndDocuments = async (collectionKey, productObjectsToA
 //     addCollectionAndDocuments('categories', SHOP_DATA)
 // }, [])
 
-export const getCategoriesAndDocuments = async () => {
+export const getCategoriesAndDocuments = async (): Promise<Category[] | undefined> => {
     const collectionRef = collection(db, 'categories'); // get reference to categories collection inside firestore db
     const q = query(collectionRef); //query method on collectionRef creates a query that retrieves all of the documents inside the categories collection (i.e. hats/jackets/sneakers/mens/womens)
 
@@ -95,7 +112,7 @@ export const getCategoriesAndDocuments = async () => {
         // console.log(querySnapshot.docs); //.docs nested one layer deeper contains a general array of our 5 product document instances/objects for each product category, but not the actual data yet. Need to nest further into .data() under prototype
         
         //map through general array of product objects and get actual data for each
-        const categoriesArray = querySnapshot.docs.map((document => document.data()));
+        const categoriesArray = querySnapshot.docs.map((document => document.data() as Category));
         // console.log(categoriesArray);
         return categoriesArray; // final result outputs array of 5 giant product objects
         
@@ -104,12 +121,12 @@ export const getCategoriesAndDocuments = async () => {
     };
 };
 
-export const createAuthUserWithEmailAndPassword = async (email, password) => {
+export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
     if(!email || !password) return;
     return await createUserWithEmailAndPassword(auth, email, password);
 };
 
-export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+export const signInAuthUserWithEmailAndPassword = async (email: string, password: string) => {
     if(!email || !password) return;
     return await signInWithEmailAndPassword(auth, email, password);
 };
@@ -118,9 +135,9 @@ export const signOutAuthUser = async () => {
     return await signOut(auth);
 };
 
-export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
+export const onAuthStateChangedListener = (callback: NextOrObserver<User>) => onAuthStateChanged(auth, callback);
 
-export const getCurrentUser = () => {
+export const getCurrentUser = (): Promise<User | null> => {
     return new Promise((resolve, reject) => {
         const unsubscribe = onAuthStateChanged(
             auth, 
@@ -131,7 +148,7 @@ export const getCurrentUser = () => {
     });
 
     // we know we get the unsubscribe from onAuthStateChanged listener from firebase.
-    //onAuthStateChanged takes the auth object (auth = gethAuth()) and also takes a callback function. We know onAuthStateChanged automatically returns on authentication object by default once it initializes. The callback function then receives this user auth object as an input, and then runs whatever set of instructions with this object in the callback function
+    //onAuthStateChanged takes the auth object (auth = gethAuth()) and also takes a callback function. We know onAuthStateChanged automatically returns on authentication object of the user by default once it initializes. The callback function then receives this user auth object as an input, and then runs whatever set of instructions with this object in the callback function
    //This listener will automatically know if there is a user already signed in, or whether there isn't one. Regardless, we get some value back.
     //Don't want this listener to always stay active, want to turn it off once we get a value back, otherwise we get a memory leak. That's why we immediataly run unsubscribe() in the callback; and then resolve the promise with with the same user authentication object that was received as an input
     // reject is a callback function that runs when an error is thrown in the process of fetching for the user auth.
