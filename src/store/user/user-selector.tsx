@@ -1,4 +1,10 @@
-export const selectCurrentUser = (state) => state.user.currentUser;
+import {createSelector} from 'reselect';
+import { UserInitialState } from './user-reducer';
+
+export const extractUserReducer = (state): UserInitialState => state.user;
+
+
+export const selectCurrentUser = createSelector([extractUserReducer], (userSlice) => userSlice.currentUser);
 
 //currentUser initializes as null
 

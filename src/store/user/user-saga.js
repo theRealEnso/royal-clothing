@@ -8,7 +8,7 @@ import { getCurrentUser, createUserDocumentOrSignInUserFromAuth, signInWithGoogl
 
 export function* getSnapshotFromUserAuth(userAuth, additionalDetails) {
     try {
-        const userSnapshot = yield call(createUserDocumentOrSignInUserFromAuth, userAuth, additionalDetails); // syntax a bit different => separate inputs using commas instead of wrapping them inside parens
+        const userSnapshot = yield call(createUserDocumentOrSignInUserFromAuth, userAuth, additionalDetails); // Use call for normal function calls. Use put to replace with dispatch. syntax a bit different => separate inputs using commas instead of wrapping them inside parens
         // console.log(userSnapshot);
         // console.log(userSnapshot.data());
         yield put(signInSuccess({id: userSnapshot.id, ...userSnapshot.data()}));

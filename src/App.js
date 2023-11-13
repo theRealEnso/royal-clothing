@@ -5,15 +5,16 @@ import {useDispatch} from 'react-redux';
 // import { createUserDocumentOrSignInUserFromAuth, onAuthStateChangedListener, getCurrentUser } from './utilities/firebase/firebase.utilities.jsx';
 // import { setCurrentUser } from './store/user/user-action.js';
 
-import { checkUserSession } from './store/user/user-action.js';
+import { checkUserSession } from './store/user/user-action';
 
 import Home from './routes/home/Home.jsx';
-import Navigation from './components/navigation/Navigation.jsx';
+import Navigation from './components/navigation/Navigation';
 import Shop from './routes/shop/Shop.jsx';
-import Authentication from './routes/authentication/Authentication.jsx'
+import Authentication from './routes/authentication/Authentication'
 import Checkout from './routes/checkout/Checkout.jsx';
-import ConfirmationPage from './routes/confirmation/confirmation-page.jsx';
+import ConfirmationPage from './routes/confirmation/confirmation-page';
 
+// want to check if there is an active user session when App component mounts
 function App() {
   const dispatch = useDispatch();
 
@@ -21,7 +22,7 @@ function App() {
     dispatch(checkUserSession());
     
     // getCurrentUser().then((user) => console.log(user));
-  }, []);
+  }, [dispatch]);
 
   // useEffect(() => {
   //   const unsubscribe = onAuthStateChangedListener((user) => {
