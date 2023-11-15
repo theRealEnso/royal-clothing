@@ -18,18 +18,6 @@ export const CATEGORIES_INITIAL_STATE: CategoriesState = {
     error: null,
 };
 
-export function withMatcher(actionCreator: Function){
-    const type = actionCreator().type;
-    //use Object.assign to take the action creator, and modify it so that it has the extracted type as well as the match method
-    return Object.assign(actionCreator, {
-        type,
-        match(action: AnyAction) {
-            return action.type === type;
-        }
-        // match method / function receives whatever action flows through reducers (which has shape of AnyAction), but checks if the type properties / values are the same as the action creator itself
-    });
-};
-
 //Updated flow: user navigates to shop page => shop component  dispatches the fetchCategoriesStart function => fetchCategoriesStart function specifically calls the createAction utility function that returns the specific Type object that ONLY has an action without a payload.
 //IN ADDITION, the fetchCategoriesStart function has been modified with an additional overloaded withMatcher function that performs additional logic on the createAction utility function. Recall that withMatcher is overloaded to return the Matchable type.
 //Also recall that this Matchable type has a match method => this match method is defined such that it expects to receive an action object that has been NARROWED DOWN to be the same object action object being dispatched by the createAction(CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_START)
@@ -73,6 +61,7 @@ export const categoriesReducer = (state = CATEGORIES_INITIAL_STATE, action: AnyA
     };
 
     return state;
+};
 
     // const {type, payload} = action;
 
@@ -97,4 +86,3 @@ export const categoriesReducer = (state = CATEGORIES_INITIAL_STATE, action: AnyA
     //     default:
     //         return state;
     // };
-};

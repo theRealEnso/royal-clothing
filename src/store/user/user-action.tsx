@@ -21,7 +21,7 @@ export type SignInFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_IN_FAILED, E
 
 export type SignUpStart = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_START, {email: string, password: string, displayName: string}>;
 
-export type SignUpSuccess = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_SUCCESS, {user: UserData, additionalInformation: AdditionalInformation}>;
+export type SignUpSuccess = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_SUCCESS, {user: User, additionalInformation: AdditionalInformation}>;
 
 export type SignUpFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_FAILED, Error>;
 
@@ -47,7 +47,7 @@ export const signInFailed = withMatcher((error: Error): SignInFailed => createAc
 
 export const signUpStart = withMatcher((email: string, password: string, displayName: string): SignUpStart => createAction(USER_ACTION_TYPES.SIGN_UP_START, {email, password, displayName}));
 
-export const signUpSuccess = withMatcher((user: UserData, additionalInformation: AdditionalInformation): SignUpSuccess => createAction(USER_ACTION_TYPES.SIGN_UP_SUCCESS, {user, additionalInformation}));
+export const signUpSuccess = withMatcher((user: User, additionalInformation: AdditionalInformation): SignUpSuccess => createAction(USER_ACTION_TYPES.SIGN_UP_SUCCESS, {user, additionalInformation}));
 
 export const signUpFailed = withMatcher((error: Error): SignUpFailed => createAction(USER_ACTION_TYPES.SIGN_UP_FAILED, error));
 

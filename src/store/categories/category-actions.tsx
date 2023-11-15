@@ -21,15 +21,31 @@ export const fetchCategoriesSuccess = withMatcher((categoriesArray: Category[]):
 export const fetchCategoriesFailed = withMatcher((error: Error): FetchCategoriesFailed => createAction(CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_FAILED, error));
 
 
+/////////////////////////   UNIONS BEFORE MATCHABLE TYPES    //////////////////////////////////////////////////////////////////////////
+
+
+// import { CATEGORY_ACTION_TYPES, Category} from "./category-types";
+// import { createAction, Action, ActionWithPayload} from "../../utilities/reducer-utilities";
+
+
+// export type FetchCategoriesStart = Action<CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_START>;
+
+// export type FetchCategoriesSuccess = ActionWithPayload<CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_SUCCESS, Category[]>;
+
+// export type FetchCategoriesFailed = ActionWithPayload<CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_FAILED, Error>;
+
+// export type CategoryActions = FetchCategoriesStart | FetchCategoriesSuccess | FetchCategoriesFailed;
+
+// export const fetchCategoriesStart = (): FetchCategoriesStart => createAction(CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_START);
+
+// export const fetchCategoriesSuccess = (categoriesArray: Category[]): FetchCategoriesSuccess => createAction(CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_SUCCESS, categoriesArray);
+
+// export const fetchCategoriesFailed = (error: Error): FetchCategoriesFailed => createAction(CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_FAILED, error);
 
 
 
 
-
-
-
-
-// BEFORE TYPESCRIPT    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////   BEFORE TYPESCRIPT    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 // export const setCategoriesArray = (categoriesArray) => createAction(CATEGORY_ACTION_TYPES.SET_CATEGORIES_ARRAY, categoriesArray);

@@ -1,4 +1,5 @@
-//////////////////////////////////////////////////////////////////////////////
+import { Middleware } from "redux";
+import { RootState } from "../store";
 
 // - The loggerMiddleware function is defined as a curried function. A curried function is a function that takes multiple arguments, but instead of taking them all at once, it takes one argument at a time and returns a new function that takes the next argument. In this case, loggerMiddleware takes one argument store.
 
@@ -8,7 +9,7 @@
 
 // - The third level of the curried function is (action) => {...}. This function takes the action as an argument. The action represents the action object dispatched to update the state in Redux. It typically has a type property that describes the action type and a payload property that contains the data associated with the action.
 
-export const loggerMiddleware = (store) => (next) => (action) => {
+export const loggerMiddleware: Middleware<{}, RootState> = (store) => (next) => (action) => { // pass empty object into Dispatch extension (we're not extending any additional functionality to our dispatches), pass Rootstate into S, leave 3rd argument alone. We're not changing anything with our dispatches
     if(!action.type) return next(action);
 
     console.log('type: ', action.type);

@@ -27,10 +27,12 @@ const deleteCartItem = (cartItems: CartItem[], productToDelete: CartItem): CartI
 };
 
 export type SetCartItemsArray = ActionWithPayload<CART_ACTION_TYPES.SET_CART_ITEMS, CartItem[]>;
-export type SetIsCartOpen = ActionWithPayload<CART_ACTION_TYPES.SET_IS_CART_OPEN, boolean>
+export type SetIsCartOpen = ActionWithPayload<CART_ACTION_TYPES.SET_IS_CART_OPEN, boolean>;
+export type ResetCart = ActionWithPayload<CART_ACTION_TYPES.SET_CART_ITEMS, CartItem[]>;
 
 export const setCartItems = withMatcher((cartItems: CartItem[]): SetCartItemsArray => createAction(CART_ACTION_TYPES.SET_CART_ITEMS, cartItems));
 export const setIsCartOpen = withMatcher((boolean: boolean): SetIsCartOpen => createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, boolean));
+export const resetCart = withMatcher((cartItems: CartItem[]): ResetCart => createAction(CART_ACTION_TYPES.SET_CART_ITEMS, cartItems))
 
 export const addItemToCart = (cartItems: CartItem[], productToAdd: CategoryItem) => {
     const newCartItems = addCartItem(cartItems, productToAdd);

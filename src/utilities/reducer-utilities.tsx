@@ -3,7 +3,7 @@ import { AnyAction } from "redux";
 
 //AnyAction extends from Action. Action is another interface that has the shape of an object, that receives some Generic T. Inside that object, it has a type property that has assigned to it the corresponding Generic T value, so it looks like this:
 
-// export interface Action<T = any> {
+// export interface Action<T> = any> {
 //     type: T
 // }
 

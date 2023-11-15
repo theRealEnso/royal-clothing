@@ -10,8 +10,9 @@ import {createSelector} from 'reselect';
 
 import { CategoriesState } from './category-reducer';
 import { CategoryMap } from './category-types';
+import { RootState } from '../store';
 
-const extractCategoryReducer = (state): CategoriesState => state.categories; //input selector to be used, get the categories reducer ({categories: categoriesReducer})
+const extractCategoryReducer = (state: RootState): CategoriesState => state.categories; //input selector to be used, get the categories reducer ({categories: categoriesReducer})
 
 export const selectCategories = createSelector([extractCategoryReducer], (categoriesSlice) => categoriesSlice.categoriesArray); // makes a memoized selector => createSelector is a function that has two arguments; First, it takes an array of input selectors (can have multiple selectors) and second is the result function. The result function RECEIVES the RESULTS of the input selectors as arguments, then performs some operation or computation on those arguments
 

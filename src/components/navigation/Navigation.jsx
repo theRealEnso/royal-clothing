@@ -3,11 +3,11 @@ import {Outlet, Link} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
 import {useDispatch} from 'react-redux';
-import { signOutStart } from '../../store/user/user-action.js';
+import { signOutStart } from '../../store/user/user-action';
 
-import { selectIsCartOpen } from '../../store/cart/cart-selector.js';
+import { selectIsCartOpen } from '../../store/cart/cart-selector';
 
-import { selectCurrentUser } from '../../store/user/user-selector.js';
+import { selectCurrentUser } from '../../store/user/user-selector';
 
 // import { signOutAuthUser } from '../../utilities/firebase/firebase.utilities.jsx';
 import './navigation-styles.scss';

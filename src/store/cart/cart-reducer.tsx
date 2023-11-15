@@ -3,17 +3,17 @@ import { CartItem } from "./cart-types";
 import {setCartItems, setIsCartOpen, resetCart} from '../cart/cart-actions';
 
 
-export type CartItemsState = {
+export type CartState = {
     readonly cartItems: CartItem[],
     readonly isCartOpen: boolean
 };
 
-export const CART_ITEMS_INITIAL_STATE: CartItemsState = {
+export const CART_ITEMS_INITIAL_STATE: CartState = {
     cartItems: [],
     isCartOpen: false
 };
 
-export const cartReducer = (state = CART_ITEMS_INITIAL_STATE, action: AnyAction): CartItemsState => {
+export const cartReducer = (state = CART_ITEMS_INITIAL_STATE, action: AnyAction): CartState => {
 
     if(setIsCartOpen.match(action)) {
         return {

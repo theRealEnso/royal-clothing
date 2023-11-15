@@ -3,19 +3,19 @@ import {signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutSuccess
 import {UserData} from '../../utilities/firebase/firebase.utilities';
 // import {User} from 'firebase/auth';
 
-export type UserInitialState = {
-    readonly currentUser: null | UserData;
+export type UserState = {
+    readonly currentUser: UserData | null;
     readonly isLoading: boolean;
-    readonly error: null | Error
-}
+    readonly error: null | Error;
+};
 
-const INITIAL_STATE: UserInitialState = {
+const USER_INITIAL_STATE: UserState = {
     currentUser: null,
     isLoading: false,
     error: null,
 };
 
-export const userReducer = (state = INITIAL_STATE, action: AnyAction) => {
+export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction)  => {
     if(signInSuccess.match(action)){
         return {
             ...state,
