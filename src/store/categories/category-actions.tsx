@@ -56,14 +56,6 @@ export const fetchCategoriesFailed = withMatcher((error: Error): FetchCategories
 
 // export const fetchCategoriesFailed = (error) => createAction(CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_FAILED, error);
 
-
-
-
-
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // thunk async function before moving to saga

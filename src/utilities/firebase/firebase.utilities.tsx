@@ -112,7 +112,7 @@ export const getCategoriesAndDocuments = async (): Promise<Category[] | undefine
         // console.log(querySnapshot); // prints a giant object
         // console.log(querySnapshot.docs); //.docs nested one layer deeper contains a general array of our 5 product document instances/objects for each product category, but not the actual data yet. Need to nest further into .data() under prototype
         
-        //map through general array of product objects and get actual data for each
+        //map through general array of the 5 product objects and get actual data for each
         const categoriesArray = querySnapshot.docs.map((document => document.data() as Category));
         // console.log(categoriesArray);
         return categoriesArray; // final result outputs array of 5 giant product objects
