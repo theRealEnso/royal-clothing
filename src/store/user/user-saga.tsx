@@ -36,7 +36,7 @@ export function* isUserAuthenticated() {
 export function* signInWithGoogle(){
     try {
         const {user} = yield* call(signInWithGooglePopup);
-        yield* call(getSnapshotFromUserAuth, user) //additionalDetails param not used here, so w need to make this field optional by adding a ? to this param inside the origina function definition
+        yield* call(getSnapshotFromUserAuth, user) //additionalDetails param not used here, so w need to make this field optional by adding a ? to this param inside the original function definition
     } catch (error) {
         yield* put(signInFailed(error as Error));
     };
