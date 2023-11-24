@@ -1,16 +1,16 @@
-import './form-input-styles.scss';
+import {FormInputLabel, Input, FormInputGroup} from './form-input-styles.jsx';
 
 export const FormInput = ({label, ...otherProps}) => {
     return (
-        <div className='form-input-group'>
-            <input className='form-input' {...otherProps}></input> {/* spread out other properties like type/name/value/onChange/required, etc  */}
+        <FormInputGroup>
+            <Input>{...otherProps}</Input>{/* spread out other properties like type/name/value/onChange/required, etc  */}
             {
                 //only render label element if there is an actual label property
-                label && <label className={`${otherProps.value.length ? 'shrink' : null} form-input-label`}>{label}</label>
+                label && <FormInputLabel shrink={otherProps.value.length}>{label}</FormInputLabel>
                 // if there is any value in otherProps then apply the shrink class, otherwise do nothing
             }
             
-        </div>
+        </FormInputGroup>
     );
 };
 

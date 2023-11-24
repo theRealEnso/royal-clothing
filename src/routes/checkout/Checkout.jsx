@@ -9,7 +9,7 @@ import { selectCartItems, selectCartTotal } from '../../store/cart/cart-selector
 import CheckoutItem from '../../components/checkout-item/CheckoutItem';
 import PaymentForm from '../../components/payment-form/payment-form';
 
-import './checkout.styles.scss';
+import {CheckoutContainer, CheckoutHeader, HeaderBlock, Total} from  './checkout.styles.jsx';
 
 const Checkout = () => {
     // const {cartItems, total} = useContext(CartContext);
@@ -17,43 +17,43 @@ const Checkout = () => {
     const cartTotal = useSelector(selectCartTotal);
 
     return (
-        <div className='checkout-container'>
+        <CheckoutContainer>
 
-            <div className='checkout-header'>
-                <div className='header-block'>
+            <CheckoutHeader>
+                <HeaderBlock>
                     <span>Product</span>
-                </div>
+                </HeaderBlock>
 
-                <div className='header-block'>
+                <HeaderBlock>
                     <span>Description</span>
-                </div>
+                </HeaderBlock>
 
-                <div className='header-block'>
+                <HeaderBlock>
                     <span>Quantity</span>
-                </div>
+                </HeaderBlock>
 
-                <div className='header-block'>
+                <HeaderBlock>
                     <span>Price/Item</span>
-                </div>
+                </HeaderBlock>
 
-                <div className='header-block'>
+                <HeaderBlock>
                     <span>Item Total</span>
-                </div>
+                </HeaderBlock>
 
-                <div className='header-block'>
+                <HeaderBlock>
                     <span>Remove</span>
-                </div>
-            </div>
+                </HeaderBlock>
+            </CheckoutHeader>
 
             {
                 cartItems.map(cartItem => <CheckoutItem key={cartItem.id} cartItem={cartItem}></CheckoutItem>)
             }
 
-            <span className='total'>Total : $ {cartTotal}</span>
+            <Total>Total : $ {cartTotal}</Total>
             
             <PaymentForm></PaymentForm>
 
-        </div>
+        </CheckoutContainer>
     );
 };
 

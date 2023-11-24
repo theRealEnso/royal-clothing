@@ -7,7 +7,7 @@ import { emptyCartItems } from '../../store/cart/cart-actions';
 
 import { useNavigate } from 'react-router-dom';
 
-import './payment-form.styles.scss';
+import {PaymentFormContainer, FormContainer, PaymentButton} from './payment-form.styles.jsx';
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 import Button, {BUTTON_TYPE_CLASSES} from "../button/Button";
@@ -72,17 +72,15 @@ const PaymentForm = () => {
     };
 
     return (
-        <div className='payment-form-container'>
-            <form className='form-container' onSubmit={handlePayment}>
+        <PaymentFormContainer>
+            <FormContainer onSubmit={handlePayment}>
                 <h2>Credit Card Payment: </h2>
                 <CardElement></CardElement>
 
-                <div className='b-container'>
-                    <Button buttonType={BUTTON_TYPE_CLASSES.inverted} isLoading={isProcessingPayment}>Pay Now</Button>
-                </div>
+                <PaymentButton buttonType={BUTTON_TYPE_CLASSES.inverted} isLoading={isProcessingPayment}>Pay Now</PaymentButton>
                 
-            </form>
-        </div>
+            </FormContainer>
+        </PaymentFormContainer>
     );
 };
 

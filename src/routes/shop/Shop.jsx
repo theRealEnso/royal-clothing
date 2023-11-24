@@ -9,7 +9,7 @@ import {fetchCategoriesStart} from '../../store/categories/category-actions'
 import CategoriesPreview from '../categories-preview/CategoriesPreview';
 import Category from '../../components/category/Category';
 
-import './shop-styles.scss';
+// import {ProductsContainer} from './shop-styles.jsx';
 
 const Shop = () => {
     const dispatch = useDispatch();

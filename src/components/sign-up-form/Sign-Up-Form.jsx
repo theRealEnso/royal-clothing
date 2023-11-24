@@ -6,7 +6,7 @@ import { signUpStart } from '../../store/user/user-action';
 
 import FormInput from '../form-input/FormInput';
 import Button from '../button/Button'
-import './sign-up-form.styles.scss';
+import {SignUpContainer} from './sign-up-form.styles';
 
 const SignUpForm = () => {
     const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const SignUpForm = () => {
     };
 
     return (
-        <div className='sign-up-container'>
+        <SignUpContainer>
             <h2>Don't have an account?</h2>
             <span>Sign up with your email and password</span>
             
@@ -73,7 +73,7 @@ const SignUpForm = () => {
 
                 <Button type='submit'>Sign Up</Button>
             </form>
-        </div>
+        </SignUpContainer>
     );
 };
 

@@ -2,10 +2,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import { addItemToCart, removeItemFromCart, deleteItemFromCart } from '../../store/cart/cart-actions';
 import { selectCartItems } from '../../store/cart/cart-selector';
 
-import './cart-item.styles.scss';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import {CheckBoxIcon, AddIcon, DeleteIcon, CartItemContainer, ItemDetails, Name, QuantityPrice, IconContainer} from './cart-item.styles.jsx';
+// import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+// import AddBoxIcon from '@mui/icons-material/AddBox';
+// import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const CartItem = ({cartItem}) => {
     const {name, quantity, price, imageUrl} = cartItem;
@@ -18,22 +18,22 @@ const CartItem = ({cartItem}) => {
     const deleteProductFromCart = () => dispatch(deleteItemFromCart(cartItems, cartItem));
 
     return (
-        <div className='cart-item-container'>
+        <CartItemContainer>
             <img src={imageUrl} alt={`${name}`}></img>
 
-            <div className='item-details'>
-                <span className='name'>{name}</span>
-                <span className='quantityPrice'>{quantity} x ${price}</span>
+            <ItemDetails>
+                <Name>{name}</Name>
+                <QuantityPrice>{quantity} x ${price}</QuantityPrice>
 
-                <div className='icon-container'>
-                    <span className='minusIcon' onClick={removeProductFromCart}><IndeterminateCheckBoxIcon></IndeterminateCheckBoxIcon></span>
-                    <span className='addIcon' onClick={addProductToCart}><AddBoxIcon></AddBoxIcon></span>
-                    <span className='trashIcon' onClick={deleteProductFromCart}><DeleteForeverIcon></DeleteForeverIcon></span>
-                </div>
+                <IconContainer>
+                    <CheckBoxIcon as='span' onClick={removeProductFromCart}></CheckBoxIcon>
+                    <AddIcon as='span' onClick={addProductToCart}></AddIcon>
+                    <DeleteIcon as='span' onClick={deleteProductFromCart}></DeleteIcon>
+                </IconContainer>
                 
-            </div>
+            </ItemDetails>
 
-        </div>
+        </CartItemContainer>
     );
 };
 

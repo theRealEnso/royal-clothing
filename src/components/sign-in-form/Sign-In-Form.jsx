@@ -5,9 +5,9 @@ import {useDispatch} from 'react-redux'
 import { googleSignInStart, emailSignInStart } from '../../store/user/user-action';
 
 import FormInput from '../form-input/FormInput';
-import Button from '../button/Button';
+import Button, {BUTTON_TYPE_CLASSES} from '../button/Button';
 
-import './sign-in-form-styles.scss';
+import {SignInContainer, ButtonsContainer, StyledH2} from './sign-in-form.styles';
 
 const SignInForm = () => {
     const dispatch = useDispatch();
@@ -75,19 +75,21 @@ const SignInForm = () => {
     };
 
     return (
-        <div className='sign-in-container'>
+        <SignInContainer>
             <h2>Already have an account?</h2>
             <span>Sign in with your email and password</span>
             
             <form onSubmit={handleFormSubmit}>
                 <FormInput label='Email' type='email' name='email' value={email} required onChange={handleInputChange}></FormInput>
                 <FormInput label='Password' type='password' name='password' value={password} required onChange={handleInputChange}></FormInput>
-                <div className='buttons-container'>
+
+                <ButtonsContainer>
                     <Button type='submit'>Sign In</Button>
-                    <Button  type='button' onClick={signInWithGoogle} buttonType='google'>Sign In with Google</Button>
-                </div>
+                    <Button  type='button' onClick={signInWithGoogle} buttonType={BUTTON_TYPE_CLASSES.google}>Sign In with Google</Button>
+                </ButtonsContainer>
+
             </form>
-        </div>
+        </SignInContainer>
     );
 };
 

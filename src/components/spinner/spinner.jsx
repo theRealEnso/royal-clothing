@@ -1,13 +1,10 @@
-import './spinner-styles.scss';
+import {SpinnerOverlay, SpinnerContainer} from './spinner-styles.jsx';
 
 const Spinner = () => {
     return (
-        <div className='spinner-overlay'>
-            <h1 className='loading'>Loading...</h1>
-            <div className='spinner-container'>
-                
-            </div>
-        </div>
+        <SpinnerOverlay>
+            <SpinnerContainer></SpinnerContainer>
+        </SpinnerOverlay>
     );
 };
 

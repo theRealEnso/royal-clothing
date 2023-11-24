@@ -3,9 +3,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addItemToCart, removeItemFromCart, deleteItemFromCart} from '../../store/cart/cart-actions';
 import { selectCartItems } from '../../store/cart/cart-selector';
 
-import './checkout-item.styles.scss';
+import {RemoveIcon, CheckoutCardContainer, CheckoutImageContainer, CheckoutItemName, CheckoutItemQuantity, LeftArrow, RightArrow, Value, Price, ItemTotal} from './checkout-item.styles.jsx';
 
-import DeleteIcon from '@mui/icons-material/Delete';
+// import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const CheckoutItem = ({cartItem}) => {
@@ -19,32 +19,32 @@ const CheckoutItem = ({cartItem}) => {
     const deleteFromCart = () => dispatch(deleteItemFromCart(cartItems, cartItem));
 
     return (
-        <div className='checkout-card-container'>
-            <div className='checkout-image-container'>
+        <CheckoutCardContainer>
+            <CheckoutImageContainer>
                 <img src={imageUrl} alt={`${name}`}></img>
-            </div>
+            </CheckoutImageContainer>
 
-            <span className='checkout-item-name'>{name}</span>
+            <CheckoutItemName>{name}</CheckoutItemName>
 
-            <div className='checkout-item-quantity'>
-                <div className='arrow left' onClick={removeOneFromCart}>
+            <CheckoutItemQuantity>
+                <LeftArrow onClick={removeOneFromCart}>
                     &#10094;
-                </div>
+                </LeftArrow>
 
-                <span className='value'>{quantity}</span>
+                <Value>{quantity}</Value>
 
-                <div className='arrow right' onClick={addOneToCart}>
+                <RightArrow onClick={addOneToCart}>
                     &#10095;
-                </div>
-            </div>
+                </RightArrow>
+            </CheckoutItemQuantity>
 
-            <span className='price'>$ {price}</span>
+            <Price>$ {price}</Price>
 
-            <span className='item-total'>$ {quantity * price}</span>
+            <ItemTotal>$ {quantity * price}</ItemTotal>
 
-            <DeleteIcon className='deleteIcon' onClick={deleteFromCart}></DeleteIcon>
+            <RemoveIcon onClick={deleteFromCart}></RemoveIcon>
 
-        </div>
+        </CheckoutCardContainer>
     );
 };
 
