@@ -1,5 +1,5 @@
-import DirectoryItem from '../directory-item/DirectoryItem.jsx';
-import {DirectoryListContainer} from './directory-list-styles.jsx/index.js';
+import DirectoryItem from '../directory-item/DirectoryItem';
+import {DirectoryListContainer} from './directory-list-styles';
 
 const categories = [
     {

@@ -12,8 +12,8 @@ import { selectCurrentUser } from '../../store/user/user-selector';
 // import { signOutAuthUser } from '../../utilities/firebase/firebase.utilities.jsx';
 import {NavigationContainer, CrownLogoContainer, NavLinksContainer, NavLinks} from './navigation-styles';
 import {ReactComponent as CrownLogo} from '../../assets/crown.svg'
-import CartIcon from '../cart-icon/CartIcon.jsx';
-import CartDropdown from '../cart-dropdown/CartDropdown.jsx';
+import CartIcon from '../cart-icon/CartIcon';
+import CartDropdown from '../cart-dropdown/CartDropdown';
 
 const Navigation = () => {
     // const {currentUser} = useContext(UserContext); no longer using context, migrate to redux

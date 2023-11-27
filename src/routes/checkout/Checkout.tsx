@@ -9,7 +9,7 @@ import { selectCartItems, selectCartTotal } from '../../store/cart/cart-selector
 import CheckoutItem from '../../components/checkout-item/CheckoutItem';
 import PaymentForm from '../../components/payment-form/payment-form';
 
-import {CheckoutContainer, CheckoutHeader, HeaderBlock, Total} from  './checkout.styles.jsx';
+import {CheckoutContainer, CheckoutHeader, HeaderBlock, Total} from  './checkout.styles';
 
 const Checkout = () => {
     // const {cartItems, total} = useContext(CartContext);

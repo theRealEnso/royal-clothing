@@ -9,7 +9,7 @@ export const NavigationContainer = styled.div`
     height: 70px;
 `
 
-export const CrownLogoContainer = styled.div`
+export const CrownLogoContainer = styled(Link)`
     padding: 25px;
     height: 100%;
     width: 100px;

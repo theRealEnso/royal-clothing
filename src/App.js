@@ -1,5 +1,6 @@
 import {Routes, Route} from 'react-router-dom';
 import {useEffect} from 'react';
+
 import {useDispatch} from 'react-redux';
 
 // import { createUserDocumentOrSignInUserFromAuth, onAuthStateChangedListener, getCurrentUser } from './utilities/firebase/firebase.utilities.jsx';
@@ -7,11 +8,11 @@ import {useDispatch} from 'react-redux';
 
 import { checkUserSession } from './store/user/user-action';
 
-import Home from './routes/home/Home.jsx';
+import Home from './routes/home/Home';
 import Navigation from './components/navigation/Navigation';
-import Shop from './routes/shop/Shop.jsx';
+import Shop from './routes/shop/Shop';
 import Authentication from './routes/authentication/Authentication'
-import Checkout from './routes/checkout/Checkout.jsx';
+import Checkout from './routes/checkout/Checkout';
 import ConfirmationPage from './routes/confirmation/confirmation-page';
 
 // want to check if there is an active user session when App component mounts

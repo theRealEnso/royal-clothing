@@ -5,11 +5,6 @@ export const SignUpContainer = styled.div`
     flex-direction: column;
     width: 380px;
 `
-
-export const StyledH2 = styled.h2`
-    margin: 10px 0;
-`
-
 // .sign-up-container {
 //     display: flex;
 //     flex-direction: column;

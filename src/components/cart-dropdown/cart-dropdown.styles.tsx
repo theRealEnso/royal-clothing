@@ -14,6 +14,14 @@ export const CartDropdownContainer = styled.div`
   top: 90px;
   right: 40px;
   z-index: 5;
+
+
+  // if any of these 3 components get nested in CartDropdownContainer, then apply these styles
+  ${BaseButton},
+  ${GoogleSignInButton},
+  ${InvertedButton} {
+    margin-top: auto;
+  }
 `
 
 export const CartItemsContainer = styled.div`

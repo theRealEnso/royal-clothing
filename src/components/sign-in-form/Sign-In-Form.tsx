@@ -1,3 +1,6 @@
+import { FormEvent, ChangeEvent } from 'react';
+import { AuthError} from 'firebase/auth';
+
 import {useState} from 'react';
 import {useDispatch} from 'react-redux'
 
@@ -7,7 +10,7 @@ import { googleSignInStart, emailSignInStart } from '../../store/user/user-actio
 import FormInput from '../form-input/FormInput';
 import Button, {BUTTON_TYPE_CLASSES} from '../button/Button';
 
-import {SignInContainer, ButtonsContainer, StyledH2} from './sign-in-form.styles';
+import {SignInContainer, ButtonsContainer} from './sign-in-form.styles';
 
 const SignInForm = () => {
     const dispatch = useDispatch();
@@ -19,7 +22,7 @@ const SignInForm = () => {
 
     const {email, password} = formInputs;
 
-    const handleInputChange = (event) => {
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target;
         setFormInputs(formInputs => {
             return {
@@ -44,7 +47,7 @@ const SignInForm = () => {
         // await createUserDocumentOrSignInUserFromAuth(response.user);
     };
 
-    const handleFormSubmit = async (event) => {
+    const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         try {
@@ -56,7 +59,7 @@ const SignInForm = () => {
             // const response = await signInAuthUserWithEmailAndPassword(email, password);
             // console.log(response);
         } catch (error) {
-            switch (error.code) {
+            switch (error as AuthError['code']) {
                 case 'auth/user-not-found':
                     alert(`Error: no user associated with this email`);
                     break;
@@ -64,7 +67,7 @@ const SignInForm = () => {
                     alert(`Error: incorrect password for associated email`);
                     break;
                 default:
-                    console.log(error);
+                    console.log('user sign in failed', error);
             };
         };
 

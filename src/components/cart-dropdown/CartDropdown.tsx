@@ -8,7 +8,7 @@ import {useNavigate} from 'react-router-dom';
 import CartItem from '../cart-item/CartItem';
 import Button from '../button/Button';
 
-import {CartDropdownContainer, CartItemsContainer, EmptyMessage, Subtotal} from './cart-dropdown.styles.jsx';
+import {CartDropdownContainer, CartItemsContainer, EmptyMessage, Subtotal} from './cart-dropdown.styles';
 
 const CartDropdown = () => {
     const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import {AuthenticationContainer} from './authentication.styles.jsx';
+import {AuthenticationContainer} from './authentication.styles';
 import SignUpForm from '../../components/sign-up-form/Sign-Up-Form';
 import SignInForm from '../../components/sign-in-form/Sign-In-Form';
 

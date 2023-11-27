@@ -48,12 +48,12 @@ export const ItemDetails = styled.div`
 `
 
 export const Name = styled.span`
-  font-size: 18px;
+  font-size: 16px;
 `
 
 export const QuantityPrice = styled.span`
   padding-left: 10px;
-  margin-top: 5px;
+  margin-top: 1px;
 `
 
 export const IconContainer = styled.div`
@@ -62,7 +62,7 @@ export const IconContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   cursor: pointer;
-  margin-top: 5px;
+  margin-top: 1px;
 `
 
 // $hoverColor: rgb(35,245,241);

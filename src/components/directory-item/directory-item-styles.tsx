@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
 // BackgroundImage and TextContainer must be defined first
-export const BackgroundImage = styled.div`
+
+type BackgroundImageProps = {
+    imageURL: string;
+}
+export const BackgroundImage = styled.div<BackgroundImageProps>`
     width: 100%; // image covers full width
     height: 100%; // image covers full height
     background-size: cover; // set size of background img--cover = scale size to fit container
