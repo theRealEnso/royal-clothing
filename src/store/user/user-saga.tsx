@@ -34,6 +34,7 @@ export function* isUserAuthenticated() {
 };
 
 export function* signInWithGoogle(){
+
     try {
         const {user} = yield* call(signInWithGooglePopup);
         yield* call(getSnapshotFromUserAuth, user); //additionalDetails param not used here, so w need to make this field optional by adding a ? to this param inside the original function definition
@@ -48,7 +49,6 @@ export function* signInWithEmail({payload: {email, password}}: EmailSignInStart)
         if(userCredential){
             const {user} = userCredential;
             yield* call(getSnapshotFromUserAuth, user);
-            redirect('/')
         }
     } catch (error) {
         yield* put(signInFailed(error as Error));

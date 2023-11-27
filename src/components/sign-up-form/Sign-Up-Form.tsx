@@ -1,10 +1,12 @@
+import {useNavigate} from 'react-router-dom';
 import {FormEvent, ChangeEvent} from 'react';
 import {AuthError, AuthErrorCodes} from 'firebase/auth'
 
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 // import { createAuthUserWithEmailAndPassword, createUserDocumentOrSignInUserFromAuth } from '../../utilities/firebase/firebase.utilities';
 
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import { selectCurrentUser } from '../../store/user/user-selector';
 import { signUpStart } from '../../store/user/user-action';
 
 import FormInput from '../form-input/FormInput';
@@ -12,7 +14,10 @@ import Button from '../button/Button'
 import {SignUpContainer} from './sign-up-form.styles';
 
 const SignUpForm = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const currentUser = useSelector(selectCurrentUser);
 
     const [formInputs, setFormInputs] = useState({
         displayName: '',
@@ -62,6 +67,12 @@ const SignUpForm = () => {
             }
         };
     };
+
+    useEffect(() => {
+        if(currentUser){
+            navigate('/')
+        }
+    },[currentUser, navigate])
 
     return (
         <SignUpContainer>

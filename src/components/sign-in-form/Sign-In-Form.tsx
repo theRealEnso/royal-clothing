@@ -1,8 +1,11 @@
+import {useNavigate} from 'react-router-dom';
+
 import { FormEvent, ChangeEvent } from 'react';
 import { AuthError} from 'firebase/auth';
 
-import {useState} from 'react';
-import {useDispatch} from 'react-redux'
+import {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux'
+import { selectCurrentUser } from '../../store/user/user-selector';
 
 // import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from "../../utilities/firebase/firebase.utilities"; // remove, extracting async logic away from components and moving into saga
 import { googleSignInStart, emailSignInStart } from '../../store/user/user-action';
@@ -13,7 +16,9 @@ import Button, {BUTTON_TYPE_CLASSES} from '../button/Button';
 import {SignInContainer, ButtonsContainer} from './sign-in-form.styles';
 
 const SignInForm = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
+    const currentUser = useSelector(selectCurrentUser);
 
     const [formInputs, setFormInputs] = useState({
         email: '',
@@ -76,6 +81,12 @@ const SignInForm = () => {
             password: ''
         });
     };
+
+    useEffect(() => {
+        if(currentUser){
+            navigate('/');
+        }
+    },[currentUser, navigate]);
 
     return (
         <SignInContainer>
